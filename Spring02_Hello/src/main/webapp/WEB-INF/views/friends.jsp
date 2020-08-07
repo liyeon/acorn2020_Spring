@@ -8,7 +8,7 @@
 <title>/views/fortune.jsp</title>
 </head>
 <body>
-<h1>오늘의 운세 페이지</h1>
+<h1>친구목록페이지</h1>
 <ul>
 <c:forEach var="i" items="${friends }">
 	<li>${i}</li>

@@ -82,9 +82,4 @@ public class MemberDaoImpl implements MemberDao{
 		List<MemberDto> list = session.selectList("member.getList");
 		return list;
 	}
-	
-	
-	
-	
-	
 }//MemberDaoImpl
