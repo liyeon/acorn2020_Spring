@@ -2,32 +2,25 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-	<!-- Car 객체를 bean 으로 만들려고 한다면? -->
+	<!-- Car객체를 Bean으로 만들려고 한다면? -->
 	
-	<!-- e1=new Engine(); -->
+	<!-- e1 = new Engine(); -->
 	<bean id="e1" class="test.auto.Engine"/>
 	
-	<!-- car1=new Car(e1); -->
+	<!-- car1 = new Car(e1); -->
 	<bean id="car1" class="test.auto.Car">
-		<constructor-arg name="engine" ref="e1"/>
+		<constructor-arg name="engine" ref="e1"/> <!-- ref는 레퍼런스 참조 엔진을 참조함 xml문서로 객체를 조립함 -->
 	</bean>
 	
 	<!-- 
-		sedan1=new Sedan();
+		sedan1 = new Sedan(); 
 		sedan1.setName("소나타");
 		sedan1.setWeight(1000);
 		sedan1.setEngine(e1);
 	 -->
 	<bean id="sedan1" class="test.auto.Sedan">
-		<property name="name" value="소나타"/>
-		<property name="weight" value="1000"/>
-		<property name="engine" ref="e1"/>
+		<property name="name" value="소나타"></property> <!-- 숫자 문자 논리는 value로 전달 그외의 객체의 참조값은 ref로 전달 -->
+		<property name="weight" value="10000"></property>
+		<property name="engine" ref="e1"></property>
 	</bean>
 </beans>
-
-
-
-
-
-

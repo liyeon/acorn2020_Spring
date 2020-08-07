@@ -4,10 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>/views/users/signup.jsp</title>
+<title>/views/users/signup</title>
 </head>
 <body>
-	<p><strong>${param.id }</strong> 님 가입 되었습니다.</p>
+	<p><strong>${param.id }</strong>님이 가입되었습니다.</p>
 	<a href="${pageContext.request.contextPath }/home.do">인덱스로 가기</a>
+	
 </body>
 </html>

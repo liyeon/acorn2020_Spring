@@ -8,19 +8,13 @@ import test.auto.Sedan;
 
 public class MainClass01 {
 	public static void main(String[] args) {
-		ApplicationContext context=
+		ApplicationContext context = 
 				new ClassPathXmlApplicationContext("test/main3/init.xml");
 		
-		Car c1=context.getBean(Car.class);
+		Car c1 = context.getBean(Car.class);
 		c1.drive();
 		
-		Sedan s1=context.getBean(Sedan.class);
+		Sedan s1 = context.getBean(Sedan.class);
 		s1.showInfo();
 	}
 }
-
-
-
-
-
-

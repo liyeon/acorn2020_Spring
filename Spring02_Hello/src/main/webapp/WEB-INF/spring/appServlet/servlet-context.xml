@@ -22,7 +22,7 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.gura.spring02" />
-	
+	<!-- 위 패키지의 하위를 스캔해서 객체 만들건 마들고 아닌것들은 스프링프레임워크 객체에 맡긴다.-->
 	
 	
 </beans:beans>
