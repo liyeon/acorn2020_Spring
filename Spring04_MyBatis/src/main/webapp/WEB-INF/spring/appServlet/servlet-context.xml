@@ -45,7 +45,7 @@
 	<!-- 
 		SqlSession 인터페이스를 구현한 
 		SqlSessionTemplate(SqlSession) 객체 
-		Dao 가 의존하는 객체 
+		Dao 가 의존하는 객체  class SqlSessionTemplate implements Sqlsession{}
 	-->
 	<beans:bean class="org.mybatis.spring.SqlSessionTemplate">
 		<beans:constructor-arg name="sqlSessionFactory" 
@@ -69,8 +69,21 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-	
+	<!--
+		com.gura.Spring 04 하위 패키지를 모두 스캔해서 bean으로 만들것들을 만들어서 관리한다.
+		@Controller, @Service, @Repository(Dao), @Component ..등등
+		이 붙어 있는 클래스로 객체를 생성해서 관리된다.
+		없으면 bean 안 만들어짐
+	 -->
 	<context:component-scan base-package="com.gura.spring04" />
+	
+	<!-- 어떤 객체를 만들 것인지 -->
+	<!-- MultiPart 폼 전송 처리를 위한 bean 설정  MultiPart 해결사 객체 -->
+	<beans:bean id="multipartResolver"
+	 class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- setter메소드 호출 -->
+		<beans:property name="maxUploadSize" value="10240000" /><!-- 10MB/ 0빼면 1MB, 1024는 1kb -->
+	</beans:bean>
 	
 	
 	

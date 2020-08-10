@@ -14,7 +14,9 @@ import com.gura.spring04.member.dto.MemberDto;
 public class MemberDaoImpl implements MemberDao{
 	//의존 객체 주입 받기(Dependency Injection)
 	@Autowired
-	private SqlSession session;
+	private SqlSession session; //아래것들이 호출되기 바로 직전에 넣어두고 실행을 한다.
+	
+	//의존관계를 느슨하게 하기 위해 인터페이스를 생성하고 주입받는 형식으로 한다.
 	
 	@Override
 	public void insert(MemberDto dto) {
