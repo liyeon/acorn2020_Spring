@@ -11,5 +11,6 @@
 <p>원본 파일 명 : <strong>${orgFileName }</strong></p>
 <p>저장된 파일 명 : <strong>${saveFileName }</strong></p>
 <p>파일 크기 : <strong>${fileSize }</strong>byte</p>
+<p>파일 제목 : <strong>${title }</strong></p>
 </body>
 </html>

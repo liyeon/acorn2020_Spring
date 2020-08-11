@@ -32,10 +32,25 @@
 	
 	<h2>파일 업로드 테스트</h2>
 	<form action="upload.do" method="post" enctype="multipart/form-data">
-		<input type="file" name="myFile" />
-		<button type="submit">업로드 </button>
+		<div class="form-group">
+			제목 <input type="text" name="title" class="form-control-lg"/>
+		</div>
+		<div class="form-group">
+		첨부파일<input type="file" name="myFile" class="form-control-lg" />
+		<button type="submit" class="btn btn-info">업로드 </button>
+		</div>
 	</form>
-	
+	<h2>파일 업로드 테스트2</h2>
+	<form action="upload2.do" method="post" enctype="multipart/form-data">
+		<div class="form-group">
+			제목 <input type="text" name="title" class="form-control-lg"/>
+		</div>
+		<div class="form-group">
+		첨부파일<input type="file" name="myFile" class="form-control-lg" />
+		<button type="submit" class="btn btn-info">업로드 </button>
+		</div>
+		
+	</form>
 </div>
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.5.1.js"></script>
 <script>
@@ -48,7 +63,6 @@
 				//data는 plain object or array 이다.
 				console.log(data);
 			}
-			
 		});
 	});
 </script>
