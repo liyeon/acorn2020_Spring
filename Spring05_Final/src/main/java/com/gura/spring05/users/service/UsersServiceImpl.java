@@ -1,12 +1,15 @@
 package com.gura.spring05.users.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gura.spring05.users.dao.UsersDao;
@@ -79,5 +82,43 @@ public class UsersServiceImpl implements UsersService{
 		//로그아웃 처리
 		session.invalidate();
 	}//deleteUser
+
+	@Override
+	public Map<String, Object> saveProfileImage(HttpServletRequest request, MultipartFile mFile) {
+		//name과 이름이 같아야한다. 업로드된 파일이 저장이 되어있고 업로드 파일 저장 정보가 여기로 들어옴
+		//원본 파일명, 저장된 파일 명
+		
+		//원본 파일 명
+		String orgFileName = mFile.getOriginalFilename();
+
+		//webapp/upload폴더 까지의 실제 경로(서버의 파일 시스템 상에서의 경로)
+		//운영체제가 다르기 때문에 하드코딩을 할 수 없어서 메소드를 통해 경로를 얻어온다.
+		String realPath = request.getServletContext().getRealPath("/upload");
+		
+		//저장할 파일의 상세 경로//upload 뒤에 붙을 파일 명을 위해 필요 \ 를 만들기 위해 필요함
+		String filePath = realPath+File.separator;
+		//전체 경로를 가지고 있는 파일 객체를 생성해야함. saveFileName
+		
+		//디렉토리를 만들 파일 객체 생성
+		File upload = new File(filePath);
+		if(!upload.exists()) {//만일 디렉토리가 존재하지 않으면 
+			upload.mkdir();//만들어준다.
+		}
+		
+		//저장할 파일 명을 구성한다.
+		String saveFileName=
+			System.currentTimeMillis()+orgFileName;
+		try {
+			//upload폴더에 파일을 저장한다.
+			mFile.transferTo(new File(filePath+saveFileName)); //전체 경로
+			System.out.println(filePath+saveFileName);
+		} catch (Exception e) {
+			e.printStackTrace();}
+		//Map에 업로드 된 이미지 파일의 경로를 담아서 리턴한다.
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("imageSrc", "/upload/"+saveFileName);
+		
+		return map;
+	}//profile
 	
 }//UsersService

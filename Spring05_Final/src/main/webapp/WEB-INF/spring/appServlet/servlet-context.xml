@@ -45,6 +45,12 @@
 	
 	<context:component-scan base-package="com.gura.spring05" />
 	
-	
+	<!-- 어떤 객체를 만들 것인지 -->
+	<!-- MultiPart 폼 전송 처리를 위한 bean 설정  MultiPart 해결사 객체 -->
+	<beans:bean id="multipartResolver"
+	 class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- setter메소드 호출 -->
+		<beans:property name="maxUploadSize" value="10240000" /><!-- 10MB/ 0빼면 1MB, 1024는 1kb -->
+	</beans:bean>
 	
 </beans:beans>
