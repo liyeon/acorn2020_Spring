@@ -51,18 +51,7 @@ public class UsersServiceImpl implements UsersService{
 		}
 		
 	}//loginProcess
-
-	@Override
-	public void updateUser(UsersDto dto) {
-		
-	}//updateUser
-
-	@Override
-	public void updatePwdUser(UsersDto dto) {
-		
-		
-	}//updatePwdUser
-
+	
 	@Override
 	public void getInfo(HttpSession session, ModelAndView mView) {
 		//로그인 된 아이디를 session 객체를 이용해서 얻어온다.
@@ -120,5 +109,29 @@ public class UsersServiceImpl implements UsersService{
 		
 		return map;
 	}//profile
+
+	@Override
+	public void updateUser(HttpSession session, UsersDto dto) {
+		//로그인 된 아이디를 읽어와서
+		String id = (String)session.getAttribute("id");
+		//UsersDto에 담고
+		dto.setId(id);
+		//만일 프로필 이미지를  수정하지 않았다면 null을 다시 넣어준다.
+//		if(dto.getProfile().equals("")) {
+//			dto.setProfile(null);
+//		}
+		//dao를 이용해서 수정 반영하기
+		dao.update(dto);
+	}//updateuser
+
+	@Override
+	public void updateUserPwd(HttpSession session, UsersDto dto, ModelAndView mView) {
+		String id = (String)session.getAttribute("id");
+		dto.setId(id);
+		//dao를 이용해서 비밀번호를 수정한다.(실패가능성있음)
+		boolean isSuccess = dao.updatePwd(dto);
+		//mView 객체에 성공 여부를 담느다.
+		mView.addObject("isSuccess",isSuccess);
+	}//updateuserPwd
 	
 }//UsersService

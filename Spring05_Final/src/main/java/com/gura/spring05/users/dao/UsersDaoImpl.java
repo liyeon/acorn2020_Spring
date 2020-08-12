@@ -42,13 +42,6 @@ public class UsersDaoImpl implements UsersDao{
 		session.update("users.update", dto);
 	}//update
 
-	@Override
-	public void pwdUpdate(UsersDto dto) {
-		 session.update("users.updatepwd", dto);
-			
-	}//pwdUpdate
-
-	
 
 	//인자로 전달되는 id에 해당되는 사용자 정보를 리턴하는 메소드
 	@Override
@@ -61,5 +54,17 @@ public class UsersDaoImpl implements UsersDao{
 	public void delete(String id) {
 		 session.delete("users.delete", id);
 	}//delete
+
+	@Override
+	public boolean updatePwd(UsersDto dto) {
+		//update문의 영향을 받은 row의 개수가 리턴된다.
+		int result = session.update("users.updatepwd", dto);
+		if(result>0) {
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
 	
 }//UsersDao

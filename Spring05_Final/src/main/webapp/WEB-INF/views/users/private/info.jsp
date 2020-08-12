@@ -11,6 +11,7 @@
 	.profile {width : 200px; height : 200px; text-align : center;display : block;border-radius : 50%; border : 1px solid #000;}
 	#profileImage {width : 100%; height : 100%;object-fit : cover;}
 	svg#profileImage{width : 80%; height : 94%; color : #868686;	}
+	img#profileImage{border-radius : 50%;	}
 </style>
 </head>
 <body>

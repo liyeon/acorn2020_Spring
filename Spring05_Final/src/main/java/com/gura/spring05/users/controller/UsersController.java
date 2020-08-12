@@ -126,9 +126,32 @@ public class UsersController {
 		return map;
 	}//
 	
-	//비밀번호 수정 폼
+	//개인 정보 수정 반영 요청 처리
+	@RequestMapping("/users/private/update")
+	public ModelAndView update(HttpServletRequest request, UsersDto dto, ModelAndView mView) {
+		System.out.println("profile:"+dto.getProfile());
+		//service 객체를 이용해서 개인 정보를 수정한다.
+		service.updateUser(request.getSession(), dto);
+		mView.setViewName("redirect:/users/private/info.do");
+		return mView;
+	}
 	
-	//비밀번호 수정
+	//비밀번호 수정 폼
+	@RequestMapping("/users/private/pwd_updateform")
+	public ModelAndView pwdUpdateform(ModelAndView mView) {
+		mView.setViewName("users/private/pwd_updateform");
+		return mView;
+	}
+	
+	//비밀번호 수정 반영 요청 처리
+	@RequestMapping("/users/private/pwd_update")
+	public ModelAndView pwdUpdate(ModelAndView mView, UsersDto dto, HttpServletRequest request) {
+		//service객체를 이용해서 새로운 비밀번호로 수정한다.
+		service.updateUserPwd(request.getSession(), dto, mView);
+		//view페이지로 forward 이동해서 응답한다. 
+		mView.setViewName("users/private/pwd_update");
+		return mView;
+	}
 
 	
 	
