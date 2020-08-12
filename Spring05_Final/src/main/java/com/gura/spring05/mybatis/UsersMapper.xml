@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="users">
+	
+	
+	<update id="update" parameterType="usersDto">
+		UPDATE users
+		SET email=#{email}, profile=#{profile}
+		WHERE id=#{id}
+	</update>
+	<!-- 비밀번호 수정 -->
+	<update id="updatepwd" parameterType="usersDto">
+		UPDATE users
+		SET pwd=#{newPwd}
+		WHERE id=#{id} AND pwd=#{pwd}
+	</update>
+	
+	<delete id="delete" parameterType="string">
+		DELETE FROM users
+		WHERE id=#{id}
+	</delete>
+	
+	<insert id="insert" parameterType="usersDto">
+		INSERT INTO users
+		(id, pwd, email, profile, regdate)
+		VALUES(#{id}, #{pwd}, #{email}, #{profile} SYSDATE)
+	</insert>
+	
+	<select id="getData" parameterType="string" resultType="usersDto">
+		SELECT id, pwd, email, profile, 
+		TO_CHAR(regdate, 'YYYY-MM-DD HH24"시"MM"분"') AS regdate   
+ 		FROM users                          
+ 		where id=#{id}                         
+	</select>
+	
+	<select id="isExist" parameterType="java.lang.String" resultType="usersDto">
+		SELECT id FROM users
+		WHERE id = #{inputId}
+	</select>
+	
+	<select id="isValid" parameterType="usersDto" resultType="string">
+		SELECT id
+		FROM users
+		WHERE id=#{id} AND pwd=#{pwd}
+	</select>
+	
+</mapper>
