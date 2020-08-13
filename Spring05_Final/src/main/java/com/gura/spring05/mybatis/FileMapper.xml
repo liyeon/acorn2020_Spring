@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="file">
+	<select id="getList" parameterType="fileDto" resultType="fileDto">
+		SELECT *
+		FROM
+			(SELECT result1.*, ROWNUM AS rnum
+			 FROM
+				(SELECT num, writer, title, orgFileName, saveFileName, fileSize, regdate
+				 FROM board_file
+					   <choose>
+					   	<when test="title != null and orgFileName != null">
+					   		WHERE title LIKE '%${title}%' 
+					   		OR orgFileName Like '%'||#{orgFileName}||'%'
+					   	</when>
+					   	<when test="title != null">
+					   		WHERE title LIKE '%'||#{title}||'%'
+					   	</when>
+					   	<when test="writer != null">
+					   		WHERE writer LIKE '%${writer}%'
+					   	</when>
+					   </choose>
+				ORDER BY num DESC) result1)
+		WHERE rnum BETWEEN #{startRowNum} AND ${endRowNum}
+	</select>
+	<select id="getCount" parameterType="fileDto" resultType="int">
+		SELECT NVL(MAX(ROWNUM), 0) <!-- NVL 혹시 null이면 0을 가져와라  -->
+		FROM board_file
+		<choose>
+			<when test="title != null and orgFileName != null">
+				WHERE title LIKE '%${title}%' 
+				OR orgFileName Like '%'||#{orgFileName}||'%'
+			</when>
+			<when test="title != null">
+				WHERE title LIKE '%'||#{title}||'%'
+			</when>
+			<when test="writer != null">
+				WHERE writer LIKE '%${writer}%'
+			</when>
+		</choose>
+	</select>
+		<!-- 검색 키워드를 DTo에 담고 파라미터를 메퍼에서 읽어올 수 있따. -->
+		<!-- 파라미터 타입으로 전달된 데이터를 읽어올수있다. 
+		$는 실행 하기 전에 미리 문자열을 구성을 해서 실행을 한다.
+		#은 JDBC에서 물음표로 치환을 해서 setString 등등 바인딩으로 실행을 하는 것
+		 '%'||#{title}||'%' '%hello%'
+		 #{endRowNum} <- 물음표로 치환 실행 할 때 set 해서 실행
+		 ${endRowNum} <- 실행하기 전에 미리 값을 넣어서 실행 10이면 10을 미리 넣는다.
+		 '${endRowNum}'
+		 수행하기 전에 처리 하는 것을 전처리 문이라한다.
+		 %'||#{title}||'%' <- 이게 더 빠름
+		-->
+		
+		<!-- 
+			1. X
+			2. WHERE title LIKE ? OR orgFileName Like ?
+			3. WHERE title LIKE ?
+			4. WHERE writer LIKE ?
+		 -->
+		<insert id="insert" parameterType="fileDto">
+			INSERT INTO board_file
+			(num, writer, title, orgFileName, saveFileName, fileSize, regdate)
+			VALUES(board_file_seq.NEXTVAL, #{writer}, #{title},
+				#{orgFileName}, #{saveFileName}, #{fileSize}, SYSDATE)
+		</insert>
+		
+		<select id="getData" parameterType="int" resultType="fileDto">
+			SELECT num, writer, title, orgFileName, saveFileName, fileSize, regdate
+			FROM board_file
+			WHERE num=#{num}
+		</select>
+		
+		<delete id="delete" parameterType="int">
+			DELETE FROM board_file
+			WHERE num=#{num}
+		</delete>
+		
+		
+</mapper>   

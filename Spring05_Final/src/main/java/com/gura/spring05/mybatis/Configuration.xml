@@ -7,6 +7,7 @@
   <!-- Dto 타입을 별칭으로 지정 할 수 있다. -->
   <typeAliases>
   	<typeAlias type="com.gura.spring05.users.dto.UsersDto" alias="usersDto"/>
+  	<typeAlias type="com.gura.spring05.file.dto.FileDto" alias="fileDto"/>
   </typeAliases>
  
   <!-- Mapper등록 -->
@@ -14,6 +15,7 @@
   <!-- servlet-context.xml의 SqlSessionFactory 객체에서 사용한다. -->
   	<mappers>
   		<mapper resource="com/gura/spring05/mybatis/UsersMapper.xml"/>
+  		<mapper resource="com/gura/spring05/mybatis/FileMapper.xml"/>
   	</mappers>
 
   </configuration>
