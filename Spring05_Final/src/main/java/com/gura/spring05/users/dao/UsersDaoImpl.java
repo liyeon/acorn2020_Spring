@@ -27,15 +27,6 @@ public class UsersDaoImpl implements UsersDao{
 		session.insert("users.insert", dto);
 	}//insert
 
-	@Override
-	public boolean isValid(UsersDto dto) {
-		String id = session.selectOne("users.isValid", dto);
-		if(id==null) {
-			return false;
-		}else {
-			return true;
-		}
-	}//isValid
 
 	@Override
 	public void update(UsersDto dto) {
@@ -56,15 +47,9 @@ public class UsersDaoImpl implements UsersDao{
 	}//delete
 
 	@Override
-	public boolean updatePwd(UsersDto dto) {
+	public void updatePwd(UsersDto dto) {
 		//update문의 영향을 받은 row의 개수가 리턴된다.
-		int result = session.update("users.updatepwd", dto);
-		if(result>0) {
-			return true;
-		}else {
-			return false;
-		}
-		
+		session.update("users.updatepwd", dto);
 	}
 	
 }//UsersDao

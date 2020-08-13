@@ -12,7 +12,7 @@
 	<update id="updatepwd" parameterType="usersDto">
 		UPDATE users
 		SET pwd=#{newPwd}
-		WHERE id=#{id} AND pwd=#{pwd}
+		WHERE id=#{id}
 	</update>
 	
 	<delete id="delete" parameterType="string">
@@ -38,10 +38,5 @@
 		WHERE id = #{inputId}
 	</select>
 	
-	<select id="isValid" parameterType="usersDto" resultType="string">
-		SELECT id
-		FROM users
-		WHERE id=#{id} AND pwd=#{pwd}
-	</select>
 	
 </mapper>

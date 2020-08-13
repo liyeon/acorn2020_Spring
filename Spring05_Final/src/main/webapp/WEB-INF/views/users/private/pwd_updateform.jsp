@@ -29,6 +29,8 @@
 	
 	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.5.1.js"></script>
 	<script>
+	
+	
 	//id가 myForm인 곳에 submit 이벤트가 일어 났을 때 실행 할 함수 등록
 	$("#myForm").on("submit", function(){
 		//입력한 새로운 비밀번호2개를 읽어와서
