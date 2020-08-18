@@ -73,4 +73,20 @@ public class CafeController {
 		return mView;
 	}
 	
+	//댓글 요청 처리
+	@RequestMapping(value = "/cafe/private/comment_insert",
+							method=RequestMethod.POST)
+	public ModelAndView commentInsert(HttpServletRequest request, ModelAndView mView, @RequestParam int ref_group) {
+		//새 댓글을 저장하고
+		cafeService.saveCommnet(request);
+		//보고 있던 글 자세히 보기로 다시 리다이렉트 이동 시킨다.
+		mView.setViewName("redirect:/cafe/detail.do?num="+ref_group);
+		return mView;
+	}
+	@RequestMapping(value = "/cafe/private/comment_delete")
+	public ModelAndView commentDelete(HttpServletRequest request, ModelAndView mView, @RequestParam int ref_group) {
+		cafeService.deleteComment(request);
+		mView.setViewName("redirect:/cafe/detail.do?num="+ref_group);
+		return mView;
+	}
 }//

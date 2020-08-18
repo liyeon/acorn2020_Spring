@@ -18,7 +18,8 @@ public class UsersDaoImpl implements UsersDao{
 		if(id==null) {//존재하지 않는 아이디
 			return false;
 		}else {//존재하는 아이디
-			return true;}
+			return true;
+		}
 		
 	}//isExist
 
