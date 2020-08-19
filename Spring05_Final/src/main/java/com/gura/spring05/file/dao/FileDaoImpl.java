@@ -23,7 +23,6 @@ public class FileDaoImpl implements FileDao{
 	//검색 키워드에 맞는 row의 갯수를 리턴하는 메소드
 	@Override
 	public int getCount(FileDto dto) {
-		
 		return session.selectOne("file.getCount", dto);
 	}
 	//파일 정보를 저장하는 메소드

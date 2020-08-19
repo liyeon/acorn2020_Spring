@@ -110,5 +110,12 @@ public class CafeController {
 		
 	}
 	
-	
+	//댓글 무한 스크롤 ajax요청 처리
+	@RequestMapping("/cafe/ajax_comment_list")
+	public ModelAndView ajaxCommentList(HttpServletRequest request,
+			ModelAndView mView) {
+		cafeService.moreCommentList(request);
+		mView.setViewName("cafe/ajax_comment_list");
+		return mView;
+	}
 }//

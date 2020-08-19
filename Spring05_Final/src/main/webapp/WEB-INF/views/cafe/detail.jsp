@@ -16,7 +16,7 @@
 	}
 	.contents img{max-width : 100%;}
 	.contents * {font-family : auto;}
-	#profileImage {box-shadow: rgba(209, 209, 209, 0.68) 0px 0px 5px ;width : 50px; height :50px; text-align : center;display : inline-block;border-radius : 50%; object-fit : cover;}
+	.profile-image {box-shadow: rgba(209, 209, 209, 0.68) 0px 0px 5px ;width : 50px; height :50px; text-align : center;display : inline-block;border-radius : 50%; object-fit : cover;}
 	svg#profileImage{color :#e2e2e2;	}
 	/*ul 요소의 기본 스타일 제거*/
 	.comments {margin-top : 50px;}
@@ -32,19 +32,15 @@
 	.comments dd{
 		margin-left : 26px;
 	}
-	.comment_form, .comment-insert-form, .comment-update-form {
-	display : inline-block;
-	width : 100%;
-	margin : 20px 0;
+	.insert-form {
+		margin : 40px 0 100px 0;
+		padding : 0 0 50px 0;
 	}
-	.comment_form textarea, .comment_form button,
-	.comment-insert-form textarea, .comment-insert-form button,
-	.comment-update-form textarea, .comment-update-form button
-	
+	.comment-form textarea, .comment-form button
 	{
 		float : left;
 	}
-	/*.reply_icon을 li 요소를 기준으로 배치하기*/
+	/*.reply-icon을 li 요소를 기준으로 배치하기*/
 	.comments li{
 	position : relative;
 	display : inline-block;
@@ -52,27 +48,27 @@
 	}
 	.comments ul li{
 	padding : 20px 0;
-		border-top : 1px solid #888;
+	border-top : 1px solid #f1f1f1;
 	}
 	.comments ul li:last-child{
-	border-bottom : 1px solid #888;
+	border-bottom : 1px solid #f1f1f1;
 	}
-	.comment_form textarea, .comment-insert-form textarea, .comment-update-form textarea{
+	.comment-form textarea{
 		width : 85%;
 		height : 100px;
 	}
-	/* 댓글에 댓글을 다는 폼은 일단 숨긴다. */
-	.comments form{
+	/* 댓글에 댓글을 다는 폼과 수정폼은 일단 숨긴다. */
+	.comments .comment-form{
 		display : none;
 	}
-	.comment_form button, .comment-insert-form button, .comment-update-form button{
+	.comment-form button{
 		width : 15%;
 		height : 100px;
 	}
 	
-	.reply_icon{
+	.comments .reply-icon{
 		position : absolute;
-		top : 27px;
+		top : 20px;
 		left : 11px;
 		width : 30px;
 		height : 30px;
@@ -93,7 +89,21 @@
 		border: 1px solid #ccc;
 		border-radius: 4px;
 	}
-	
+	.comments i {
+	 background : #addbc2;
+	 padding : 5px 17px 5px 10px;
+	 color : #fff;
+	 border-radius : 10px;
+	}
+	.loader{
+		position: fixed; /* 좌하단 고정된 위치에 배치 하기 위해 */
+		width: 100%;
+		left: 0;
+		bottom: 0;
+		text-align: center; /* 이미지를 좌우로 가운데  정렬 */
+		z-index: 1000;
+		display: none; /* 일단 숨겨 놓기 */
+	}
 </style>
 </head>
 <body>
@@ -159,13 +169,22 @@
 			<c:forEach var="tmp" items="${commentList }">
 				<c:choose>
 					<c:when test="${tmp.deleted eq 'yes'}">
-						<li>삭제된댓글입니다!!!!</li>
-					</c:when>
+						<li <c:if test="${tmp.num ne tmp.comment_group }"> style="padding-left:50px"</c:if>>
+						<c:if test="${tmp.num ne tmp.comment_group }"> <%--not equal --%>
+							<svg viewBox="0 0 16 16" class="bi bi-arrow-return-right reply-icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" d="M10.146 5.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 9l-2.647-2.646a.5.5 0 0 1 0-.708z"/>
+								<path fill-rule="evenodd" d="M3 2.5a.5.5 0 0 0-.5.5v4A2.5 2.5 0 0 0 5 9.5h8.5a.5.5 0 0 0 0-1H5A1.5 1.5 0 0 1 3.5 7V3a.5.5 0 0 0-.5-.5z"/>
+							</svg>
+						</c:if>
+						삭제된댓글입니다!!!!
+						</li>
+						
+						</c:when>
 					<c:otherwise>
 						<li id="comment${tmp.num }" <c:if test="${tmp.num ne tmp.comment_group }"> style="padding-left:50px"</c:if>>
-						<c:if test="${tmp.num ne tmp.comment_group }">
+						<c:if test="${tmp.num ne tmp.comment_group }"> <%--not equal --%>
 							
-							<svg viewBox="0 0 16 16" class="bi bi-arrow-return-right reply_icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+							<svg viewBox="0 0 16 16" class="bi bi-arrow-return-right reply-icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 		  						<path fill-rule="evenodd" d="M10.146 5.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 9l-2.647-2.646a.5.5 0 0 1 0-.708z"/>
 		 						<path fill-rule="evenodd" d="M3 2.5a.5.5 0 0 0-.5.5v4A2.5 2.5 0 0 0 5 9.5h8.5a.5.5 0 0 0 0-1H5A1.5 1.5 0 0 1 3.5 7V3a.5.5 0 0 0-.5-.5z"/>
 							</svg>
@@ -174,32 +193,31 @@
 								<dt>
 									<c:choose>
 										<c:when test="${empty tmp.profile}">
-											<svg id="profileImage" width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+											<svg class="profile-image" width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 						  						<path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
 											</svg>
 										</c:when>
 										<c:otherwise>
-											<img id="profileImage"
+											<img class="profile-image"
 											src="${pageContext.request.contextPath }${tmp.profile }" />
 										</c:otherwise>
 									</c:choose>
-									
-									<span>${tmp.writer }</span>
 									<c:if test="${tmp.num ne tmp.comment_group }">
-										<strong>@${tmp.target_id }</strong>
+										<i>@${tmp.target_id }</i>
 									</c:if>
+									<span>${tmp.writer }</span>
 									<span>${tmp.regdate }</span>
-									<a href="javascript:" class="reply_link">답글</a>
+									<a data-num="${tmp.num }" href="javascript:" class="reply-link">답글</a>
 									<c:if test="${tmp.writer eq id }">
-										<a href="javascript:" class="comment-update-link">수정</a>
-										<a href="javascript:deleteComment(${tmp.num })">삭제</a>
+										<a data-num="${tmp.num }" href="javascript:" class="comment-update-link">수정</a>
+										<a data-num="${tmp.num }" href="javascript:" class="comment-delete-link">삭제</a>
 									</c:if>
 								</dt>
 								<dd>
 									<pre>${tmp.content }</pre>
 								</dd>
 							</dl>
-							<form class="comment-insert-form" action="private/comment_insert.do" method="post">
+							<form class="comment-form re-insert-form" action="private/comment_insert.do" method="post">
 								<input type="hidden" name="ref_group" value="${dto.num }"/>
 								<input type="hidden" name="target_id" value="${tmp.writer }"/>
 								<input type="hidden" name="comment_group" value="${tmp.comment_group }"/>
@@ -208,7 +226,7 @@
 							</form>
 							<!-- 로그인된 아이디와 댓글의 작성자가 같으면 수정폼 출력 -->
 							<c:if test="${tmp.writer eq id }">
-								<form class="comment-update-form" action="private/comment_update.do" method="post">
+								<form class="comment-form update-form" action="private/comment_update.do" method="post">
 									<input type="hidden" name="num" value="${tmp.num }" />
 									<textarea name="content" class="form-control">${tmp.content }</textarea>
 									<button type="submit" class="btn btn-warning">수정</button>
@@ -221,9 +239,9 @@
 		</ul>
 	</div>
 	
-	<div class="comment_form">
 	<!-- 원글에 댓글을 작성하는 form -->
-		<form action="private/comment_insert.do" method="post">
+	
+		<form class="comment-form insert-form" action="private/comment_insert.do" method="post">
 			<!-- 원글의 글번호가 ref_group 번호가 된다. -->
 			<input type="hidden" name="ref_group" value="${dto.num }" />
 			<!-- 원글의 작성자가 댓글의 수신자가 된다. -->
@@ -231,44 +249,72 @@
 			<textarea name="content" class="form-control"><c:if test="${empty id }">로그인이 필요합니다.</c:if></textarea>
 			<button type="submit" class="btn btn-dark">등록</button>
 		</form>
-	</div>
-	
 	
 </div><!-- container -->
+
+<div class="loader">
+	<img src="${pageContext.request.contextPath }/resources/images/ajax-loader.gif"/>
+</div>
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.5.1.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/jquery.form.min.js"></script>
 <!-- form이 ajax로 자동으로 제출 되도록 함 -->
 <script>
+/*
+ *  문서 객체에서 click이라는 이벤트가 .comment-update-link를 가지고 있는 함수를 출력해주세요
+ 	추가됨과 동시에 자동으로 이벤트가 걸린다.
+	 추가 한 거의 속성이.comment-update-link라면 동일한 함수를 출력해달라
+	 
+	동적으로 추가 된 것까지 실행하려면 .ajaxForm(form이 실행됨과 동시에 존재해야한다.)으로 하면 안되고
+	ajaxSubmit을 해야 추가 된 것 까지 실행 가능하다.
+	$(this).ajaxSubmit // submit이벤트가 일어난 바로 그 폼을 실행시키ㄴ다. 
+	
+	추후에 추가 될 것 까지 실행이 되려면 $(document).on으로 실행시켜야한다.
+	나중에 추가 될 문서객체에도 자동으로 이벤트가 걸린다.
+	
+ */
 	//댓글 수정 링크를 눌렀을 때 호출되는 함수 등록
-	$(".comment-update-link").on("click", function(){
-		$(this).parent().parent().parent()
-		.find(".comment-update-form")
+	$(document).on("click",".comment-update-link", function(){
+		/*
+			click 이벤트가 일어난 댓글 수정 링크에 저장된 data-num 속성의 값을 읽어와서
+			id선택자를 구성한다.
+		*/
+		var selector="#comment"+$(this).attr("data-num");
+		//구성된 id 선택자를 이용해서 원하는 li요소에서 .update-form을 찾아서 동작하기
+		$(selector)
+		.find(".update-form")
 		.slideToggle();
 	});
 	
 	//로딩한 jquery.form.min.js jquery플러그인의 기능을 이용해서 댓글 수정 폼을
 	//ajax 요청을 통해 전송하고 응답받기
-	$(".comment-update-form").ajaxForm(function(data){
-		console.log(data);	
-		//수정이 일어난 댓글의 li요소를 선택해서 원하는 작업을 한다.
-		var selecter="#comment"+data.num; // "#comment4" 등등 형식의 선택자 구성
-		
-		//댓글 수정 폼을 안 보이게 한다.
-		$(selecter).find(".comment-update-form").slideUp();
-		//pre요소에 출력 된 내용 수정학.
-		$(selecter).find("pre").text(data.content);
+	$(document).on("submit", ".update-form", function(){
+		//이벤트가 일어난 폼을 ajax로 전송되도록 하고 
+		$(this).ajaxSubmit(function(data){ //ajax의 동작을 data로 받아온다. form이 아닌 Submit형태로 받아온다.
+			//console.log(data);
+			//수정이 일어난 댓글의 li 요소를 선택해서 원하는 작업을 한다.
+			var selector="#comment"+data.num; //"#comment6" 형식의 선택자 구성
+			
+			//댓글 수정 폼을 안보이게 한다. 
+			$(selector).find(".update-form").slideUp();
+			//pre 요소에 출력된 내용 수정하기
+			$(selector).find("pre").text(data.content);
+		});
+		//폼 전송을 막아준다.
+		return false;
 	});
 	
 	
-	function deleteComment(num){
+	$(document).on("click",".comment-delete-link", function(){
+		//삭제할 글번호 
+		var num=$(this).attr("data-num");
 		var isDelete=confirm("댓글을 삭제하시겠습니까?");
 		if(isDelete){
 			location.href="${pageContext.request.contextPath }"+"/cafe/private/comment_delete.do?num="+num+"&ref_group=${dto.num}";
 		}
 		
-	}
+	});
 	//답글 달기 링크를 클릭했을때 실행할 함수 등록
-	$(".reply_link").on("click", function(){
+	$(document).on("click",".reply-link", function(){
 		//로그인 여부
 		var isLogin=${not empty id};
 		if(isLogin == false){
@@ -277,15 +323,18 @@
 					"url=${pageContext.request.contextPath }/cafe/detail.do?num=${dto.num}";
 		}
 		
-		$(this).parent().parent().parent().find(".comment-insert-form")
+		var selector="#comment"+$(this).attr("data-num");
+		$(selector)
+		.find(".re-insert-form")
 		.slideToggle();
+		
 		if($(this).text()=="답글"){//링크 text를 답글일때 클릭하면 
 			$(this).text("취소");//취소로 바꾸고 
 		}else{//취소일때 크릭하면 
 			$(this).text("답글");//답글로 바꾼다.
 		}	
 	});
-	$(".comment_form form").on("submit", function(){
+	$(document).on("submit",".insert-form", function(){
 		//로그인 여부
 		var isLogin=${not empty id};
 		if(isLogin == false){
@@ -302,6 +351,45 @@
 		}
 		
 	}
+	
+	//페이지가 처음 로딩될때 1page 를 보여준다고 가정
+	var currentPage=1;
+	//전체 페이지의 수를 javascript 변수에 담아준다.
+	var totalPageCount=${totalPageCount};
+	
+	//웹브라우저에 scoll 이벤트가 일어 났을때 실행할 함수 등록 
+	$(window).on("scroll", function(){
+		if(currentPage == totalPageCount){//만일 마지막 페이지 이면 
+			return; //함수를 여기서 종료한다. 
+		}
+		//위쪽으로 스크롤된 길이 구하기
+		var scrollTop=$(window).scrollTop();
+		//window 의 높이
+		var windowHeight=$(window).height();
+		//document(문서)의 높이
+		var documentHeight=$(document).height();
+		//바닥까지 스크롤 되었는지 여부
+		var isBottom = scrollTop+windowHeight + 10 >= documentHeight;
+		if(isBottom){//만일 바닥까지 스크롤 했다면...
+			//로딩 이미지 띄우기
+			$(".loader").show();
+			
+			currentPage++; //페이지를 1 증가 시키고 
+			//해당 페이지의 내용을 ajax  요청을 해서 받아온다. 
+			$.ajax({
+				url:"ajax_comment_list.do",
+				method:"get",
+				data:{pageNum:currentPage, ref_group:${dto.num}}, //현재 글 번호와 글 자세히보기 번호도 같이 넘겨준다.
+				success:function(data){
+					//console.log(data);
+					//data 가 html 마크업 형태의 문자열 
+					$(".comments ul").append(data);
+					//로딩 이미지를 숨긴다. 
+					$(".loader").hide();
+				}
+			});
+		}
+	});		
 </script>
 </body>
 </html>
