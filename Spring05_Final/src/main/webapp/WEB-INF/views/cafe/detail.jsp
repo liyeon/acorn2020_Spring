@@ -32,12 +32,16 @@
 	.comments dd{
 		margin-left : 26px;
 	}
-	.comment_form, .comment-insert-form {
+	.comment_form, .comment-insert-form, .comment-update-form {
 	display : inline-block;
 	width : 100%;
 	margin : 20px 0;
 	}
-	.comment_form textarea, .comment_form button, .comment-insert-form textarea, .comment-insert-form button{
+	.comment_form textarea, .comment_form button,
+	.comment-insert-form textarea, .comment-insert-form button,
+	.comment-update-form textarea, .comment-update-form button
+	
+	{
 		float : left;
 	}
 	/*.reply_icon을 li 요소를 기준으로 배치하기*/
@@ -53,7 +57,7 @@
 	.comments ul li:last-child{
 	border-bottom : 1px solid #888;
 	}
-	.comment_form textarea, .comment-insert-form textarea{
+	.comment_form textarea, .comment-insert-form textarea, .comment-update-form textarea{
 		width : 85%;
 		height : 100px;
 	}
@@ -61,7 +65,7 @@
 	.comments form{
 		display : none;
 	}
-	.comment_form button, .comment-insert-form button{
+	.comment_form button, .comment-insert-form button, .comment-update-form button{
 		width : 15%;
 		height : 100px;
 	}
@@ -158,7 +162,7 @@
 						<li>삭제된댓글입니다!!!!</li>
 					</c:when>
 					<c:otherwise>
-						<li<c:if test="${tmp.num ne tmp.comment_group }"> style="padding-left:50px"</c:if>>
+						<li id="comment${tmp.num }" <c:if test="${tmp.num ne tmp.comment_group }"> style="padding-left:50px"</c:if>>
 						<c:if test="${tmp.num ne tmp.comment_group }">
 							
 							<svg viewBox="0 0 16 16" class="bi bi-arrow-return-right reply_icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -187,8 +191,8 @@
 									<span>${tmp.regdate }</span>
 									<a href="javascript:" class="reply_link">답글</a>
 									<c:if test="${tmp.writer eq id }">
+										<a href="javascript:" class="comment-update-link">수정</a>
 										<a href="javascript:deleteComment(${tmp.num })">삭제</a>
-										<a href="">수정</a>
 									</c:if>
 								</dt>
 								<dd>
@@ -202,6 +206,14 @@
 								<textarea name="content" class="form-control"></textarea>
 								<button type="submit" class="btn btn-success">등록</button>
 							</form>
+							<!-- 로그인된 아이디와 댓글의 작성자가 같으면 수정폼 출력 -->
+							<c:if test="${tmp.writer eq id }">
+								<form class="comment-update-form" action="private/comment_update.do" method="post">
+									<input type="hidden" name="num" value="${tmp.num }" />
+									<textarea name="content" class="form-control">${tmp.content }</textarea>
+									<button type="submit" class="btn btn-warning">수정</button>
+								</form>
+							</c:if>
 						</li>
 					</c:otherwise>
 				</c:choose>
@@ -224,7 +236,30 @@
 	
 </div><!-- container -->
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.5.1.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/jquery.form.min.js"></script>
+<!-- form이 ajax로 자동으로 제출 되도록 함 -->
 <script>
+	//댓글 수정 링크를 눌렀을 때 호출되는 함수 등록
+	$(".comment-update-link").on("click", function(){
+		$(this).parent().parent().parent()
+		.find(".comment-update-form")
+		.slideToggle();
+	});
+	
+	//로딩한 jquery.form.min.js jquery플러그인의 기능을 이용해서 댓글 수정 폼을
+	//ajax 요청을 통해 전송하고 응답받기
+	$(".comment-update-form").ajaxForm(function(data){
+		console.log(data);	
+		//수정이 일어난 댓글의 li요소를 선택해서 원하는 작업을 한다.
+		var selecter="#comment"+data.num; // "#comment4" 등등 형식의 선택자 구성
+		
+		//댓글 수정 폼을 안 보이게 한다.
+		$(selecter).find(".comment-update-form").slideUp();
+		//pre요소에 출력 된 내용 수정학.
+		$(selecter).find("pre").text(data.content);
+	});
+	
+	
 	function deleteComment(num){
 		var isDelete=confirm("댓글을 삭제하시겠습니까?");
 		if(isDelete){

@@ -220,7 +220,7 @@ public class CafeServiceImpl implements CafeService{
 		//댓글 정보를 DB에 저장한다.
 		cafeCommentDao.insert(dto);
 	}
-
+	//댓글 삭제
 	@Override
 	public void deleteComment(HttpServletRequest request) {
 		//GET 방식 파라미터로 전달되는 삭제할 댓글 번호
@@ -234,6 +234,12 @@ public class CafeServiceImpl implements CafeService{
 		}
 		cafeCommentDao.delete(num);
 		
+	}
+	
+	//댓글 수정
+	@Override
+	public void updateComment(CafeCommentDto dto) {
+		cafeCommentDao.update(dto);
 	}
 
 }
