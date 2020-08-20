@@ -7,14 +7,17 @@
 			(SELECT result1.*, ROWNUM AS rnum
 			FROM
 				(SELECT num, writer, content, target_id, ref_group,
-					comment_group, deleted, board_cafe_comment.regdate, profile
+					comment_group, deleted,
+					TO_CHAR(board_cafe_comment.regdate, 'YYYY"년"MM"월"DD"일" HH24"시"MI"분"') AS regdate,  
+					profile
 				FROM board_cafe_comment
 				INNER JOIN users
 				ON board_cafe_comment.writer=users.id
 				WHERE ref_group=#{ref_group}
-				ORDER BY comment_group ASC, num ASC) result1)
+				ORDER BY comment_group DESC, num ASC) result1)
 		WHERE rnum BETWEEN #{startRowNum} AND #{endRowNum}	
 	</select>
+	 <!-- join의 조건 -->
 	<!-- 
 	 두개의 테이블을 join한다 작성자와 아이디가 같은지 비교한다.
 	 REGDATE는 두 테이블에서 다 쓰기 때문에 열의 정의가 애매하지 않게 테이블 명을 알려준다.
@@ -45,7 +48,8 @@
 	</update>
 	
 	<select id="getData" parameterType="int" resultType="cafeCommentDto">
-		SELECT num, writer, content, ref_group, comment_group, deleted, regdate
+		SELECT num, writer, content, ref_group, comment_group, deleted,
+			   TO_CHAR(regdate, 'YY"년"MM"월"DD"일" HH24"시"MI"분"') AS regdate
 		FROM board_cafe_comment
 		WHERE num=#{num}
 	</select>
