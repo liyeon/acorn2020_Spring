@@ -269,7 +269,7 @@
 		<input type="hidden" name="ref_group" value="${dto.num }" />
 		<!-- 원글의 작성자가 댓글의 수신자가 된다. -->
 		<input type="hidden" name="target_id" value="${dto.writer }"/>
-		<textarea name="content" class="form-control"><c:if test="${empty id }">로그인이 필요합니다.</c:if></textarea>
+		<textarea name="content" class="form-control"<c:if test="${empty id }">readonly</c:if>><c:if test="${empty id }">로그인이 필요합니다.</c:if></textarea>
 		<button type="submit" class="btn btn-dark">등록</button>
 	</form>
 	
