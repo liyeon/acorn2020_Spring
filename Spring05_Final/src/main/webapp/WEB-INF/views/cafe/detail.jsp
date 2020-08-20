@@ -163,17 +163,7 @@
 			삭제
 		</a>
 	</c:if>
-	<hr />
-	<!-- 원글에 댓글을 작성하는 form -->
 	
-	<form class="comment-form insert-form" action="private/comment_insert.do" method="post">
-		<!-- 원글의 글번호가 ref_group 번호가 된다. -->
-		<input type="hidden" name="ref_group" value="${dto.num }" />
-		<!-- 원글의 작성자가 댓글의 수신자가 된다. -->
-		<input type="hidden" name="target_id" value="${dto.writer }"/>
-		<textarea name="content" class="form-control"><c:if test="${empty id }">로그인이 필요합니다.</c:if></textarea>
-		<button type="submit" class="btn btn-dark">등록</button>
-	</form>
 	<!-- 댓글 목록 -->
 	<div class="comments">
 		<ul>
@@ -250,26 +240,39 @@
 		</ul>
 	</div><!-- /.comments -->
 	
-	<div class="page-display mt-4 mb-4 center">
-		<ul class="pagination pagination-sm">
+	<div class="clearfix"></div>
+	<div class="page-display mt-4 mb-4 text-center">
+		<ul class="pagination" style="display : inline-flex">
 		<c:if test="${startPageNum ne 1 }">
-			<li class="page-item"><a class="page-link" href="detail.do?pageNum=${startPageNum-1 }">Prev</a></li>
+			<li class="page-item"><a class="page-link" href="detail.do?num=${dto.num }&pageNum=${startPageNum-1 }">Prev</a></li>
 		</c:if>
 		<c:forEach var="i" begin="${startPageNum }" end="${endPageNum }">
 			<c:choose>
 				<c:when test="${i eq pageNum }">
-					<li class="page-item active"><a class="page-link" href="detail.do?pageNum=${i }">${i }</a></li>
+					<li class="page-item active"><a class="page-link" href="detail.do?num=${dto.num }&pageNum=${i }">${i }</a></li>
 				</c:when>
 				<c:otherwise>
-					<li class="page-item"><a class="page-link" href="detail.do?pageNum=${i }">${i }</a></li>
+					<li class="page-item"><a class="page-link" href="detail.do?num=${dto.num }&pageNum=${i }">${i }</a></li>
 				</c:otherwise>
 			</c:choose>
 		</c:forEach>
 		<c:if test="${endPageNum lt totalPageCount }">
-			<li class="page-item"><a class="page-link" href="detail.do?pageNum=${endPageNum+1 }">Next</a></li>
+			<li class="page-item"><a class="page-link" href="detail.do?num=${dto.num }&pageNum=${endPageNum+1 }">Next</a></li>
 		</c:if>
 		</ul>	
 	</div><!-- page-display -->
+	<hr />
+	<!-- 원글에 댓글을 작성하는 form -->
+	
+	<form class="comment-form insert-form" action="private/comment_insert.do" method="post">
+		<!-- 원글의 글번호가 ref_group 번호가 된다. -->
+		<input type="hidden" name="ref_group" value="${dto.num }" />
+		<!-- 원글의 작성자가 댓글의 수신자가 된다. -->
+		<input type="hidden" name="target_id" value="${dto.writer }"/>
+		<textarea name="content" class="form-control"><c:if test="${empty id }">로그인이 필요합니다.</c:if></textarea>
+		<button type="submit" class="btn btn-dark">등록</button>
+	</form>
+	
 	
 </div><!-- container -->
 
@@ -373,72 +376,7 @@
 		
 	}
 	
-	//페이지가 처음 로딩될때 1page 를 보여준다고 가정
-	var currentPage=1;
-	//전체 페이지의 수를 javascript 변수에 담아준다.
-	var totalPageCount=${totalPageCount};
 	
-	/*
-		페이지 로딩 시점에 document의 높이가 window의 실제 높이보다 작고
-		전체페이지의 갯수가(totalPageCount) 현재페이지(currentPage)
-		보다 크면 추가로 댓글을 받아오는 ajax 요청을 해야한다.
-	*/
-	var dH=$(document).height();//문서의 높이
-	var wH=window.screen.height;//window 의 높이
-	if(dH < wH && totalPageCount > currentPage){
-		//로딩 이미지 띄우기
-		$(".loader").show();
-		
-		currentPage++; //페이지를 1 증가 시키고 
-		//해당 페이지의 내용을 ajax  요청을 해서 받아온다. 
-		$.ajax({
-			url:"ajax_comment_list.do",
-			method:"get",
-			data:{pageNum:currentPage, ref_group:${dto.num}},
-			success:function(data){
-				console.log(data);
-				//data 가 html 마크업 형태의 문자열 
-				$(".comments ul").append(data);
-				//로딩 이미지를 숨긴다. 
-				$(".loader").hide();
-			}
-		});		
-	}
-	
-	
-	//웹브라우저에 scoll 이벤트가 일어 났을때 실행할 함수 등록 
-	$(window).on("scroll", function(){
-		if(currentPage == totalPageCount){//만일 마지막 페이지 이면 
-			return; //함수를 여기서 종료한다. 
-		}
-		//위쪽으로 스크롤된 길이 구하기
-		var scrollTop=$(window).scrollTop();
-		//window 의 높이
-		var windowHeight=$(window).height();
-		//document(문서)의 높이
-		var documentHeight=$(document).height();
-		//바닥까지 스크롤 되었는지 여부
-		var isBottom = scrollTop+windowHeight + 10 >= documentHeight;
-		if(isBottom){//만일 바닥까지 스크롤 했다면...
-			//로딩 이미지 띄우기
-			$(".loader").show();
-			
-			currentPage++; //페이지를 1 증가 시키고 
-			//해당 페이지의 내용을 ajax  요청을 해서 받아온다. 
-			$.ajax({
-				url:"ajax_comment_list.do",
-				method:"get",
-				data:{pageNum:currentPage, ref_group:${dto.num}}, //현재 글 번호와 글 자세히보기 번호도 같이 넘겨준다.
-				success:function(data){
-					//console.log(data);
-					//data 가 html 마크업 형태의 문자열 
-					$(".comments ul").append(data);
-					//로딩 이미지를 숨긴다. 
-					$(".loader").hide();
-				}
-			});
-		}
-	});		
 </script>
 </body>
 </html>
