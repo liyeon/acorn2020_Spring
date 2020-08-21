@@ -31,7 +31,7 @@ public class WritingAspect {
 }
 /*
  * 	-Aspectj Expression
- * 
+ * 모든 리턴 값, 모든 메소드
  * 	1. execution(* *(..)) => 접근 가능한 모든 메소드가  //..은 인자가 있어도되고 없어도 되고 
  * (*)는 인자가 반드시 하나여만 하고
  * (*,*)인자가 두개여야만 하고
