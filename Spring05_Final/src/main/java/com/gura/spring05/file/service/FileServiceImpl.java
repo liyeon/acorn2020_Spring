@@ -177,12 +177,12 @@ public class FileServiceImpl implements FileService{
 		//1. 삭제할 파일의 정보를 읽어온다.
 		FileDto dto = fileDao.getData(num);
 		
-		//2. 본인이 작성한 글이 아닌경우에러 처리를 한다. (예외를 발생시킨다.)
-		String id = (String)request.getSession().getAttribute("id");
-		//만일 로그인된 아이디와 글 작성자가 다르면 
-		if(!id.equals(dto.getWriter())) {
-			throw new NotDeleteException("남의 파일 지우지 마셈ㅡㅡ");
-		}
+		//2. 본인이 작성한 글이 아닌경우에러 처리를 한다. (예외를 발생시킨다.)aspect 로 수정
+//		String id = (String)request.getSession().getAttribute("id");
+//		//만일 로그인된 아이디와 글 작성자가 다르면 
+//		if(!id.equals(dto.getWriter())) {
+//			throw new NotDeleteException("남의 파일 지우지 마셈ㅡㅡ");
+//		}
 		//파일 시스템에서 파일 삭제
 		String saveFileName=dto.getSaveFileName();
 		String path = request.getServletContext().getRealPath("/upload")+File.pathSeparator+saveFileName;

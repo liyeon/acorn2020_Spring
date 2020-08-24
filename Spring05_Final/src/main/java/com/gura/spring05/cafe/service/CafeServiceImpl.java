@@ -232,13 +232,13 @@ public class CafeServiceImpl implements CafeService{
 	@Override
 	public void deleteContent(int num, HttpServletRequest request) {
 		//1. 삭제할 글의 정보를 읽어온다.
-		CafeDto dto=cafeDao.getData(num);
-		//2. 본인이 작성한 글이 아닌경우 에러 처리를한다 (예외를 발생시킨다)
-		String id=(String)request.getSession().getAttribute("id");
-		//만일 로그인된 아이디와 글 작성자가 다르면
-		if(!id.equals(dto.getWriter())) {
-			throw new NotDeleteException("남의 글 지우기 없기!");
-		}
+//		CafeDto dto=cafeDao.getData(num);
+//		//2. 본인이 작성한 글이 아닌경우 에러 처리를한다 (예외를 발생시킨다)
+//		String id=(String)request.getSession().getAttribute("id");
+//		//만일 로그인된 아이디와 글 작성자가 다르면
+//		if(!id.equals(dto.getWriter())) {
+//			throw new NotDeleteException("남의 글 지우기 없기!");
+//		}
 		cafeDao.delete(num);
 	}
 	
@@ -286,10 +286,10 @@ public class CafeServiceImpl implements CafeService{
 		//세션에 저장된 로그인 된 아이디
 		String id=(String)request.getSession().getAttribute("id");
 		//댓글의 정보를 얻어와서 댓글의 작성자와 같은지 비교한다.
-		String writer=cafeCommentDao.getData(num).getWriter();
-		if(!writer.equals(id)) {
-			throw new NotDeleteException("다른 사람이 입력한 댓글은 삭제 할 수 없습니다.");
-		}
+//		String writer=cafeCommentDao.getData(num).getWriter();
+//		if(!writer.equals(id)) {
+//			throw new NotDeleteException("다른 사람이 입력한 댓글은 삭제 할 수 없습니다.");
+//		}
 		cafeCommentDao.delete(num);
 		
 	}
