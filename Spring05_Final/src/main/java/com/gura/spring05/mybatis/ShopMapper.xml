@@ -4,31 +4,36 @@
 	<select id="getList" resultType="shopDto">
 		SELECT num, name, price, remainCount
 		FROM shop
+		ORDER BY num ASC
 	</select>
-	
-	<select id="getPrice" parameterType="int" resultType="int">
-		SELECT num, name, price, remainCount
-		FROM shop
-		WHERE num=#{num}
-	</select>
-	
+	<!-- -1이 되면 SQLExcpetion -> DataAccessException
+				↑@Repository라는 어노테이션을 가지고 있으면 스프링이 바꿔준다. -->
+	<!-- CHECK제약조건 -->
 	<update id="minusCount" parameterType="int">
 		UPDATE shop
 		SET remainCount=remainCount-1
 		WHERE num=#{num}
 	</update>
-	
+	<!-- CHECK제약조건
+	(SELECT price FROM shop WHERE num=#{num})
+	-->
 	<update id="minusMoney" parameterType="shopDto">
 		UPDATE client_account
-		SET money=money-(SELECT price FROM shop WHERE num=#{num})
+		SET money=money-#{price}
+		WHERE id=#{id}
+	</update>
+	<!-- (SELECT price*0.1 FROM shop WHERE num=#{num}) -->
+	<update id="plusPoint" parameterType="shopDto">
+		UPDATE client_account
+		SET point=point+#{price}*0.1
 		WHERE id=#{id}
 	</update>
 	
-	<update id="plusPoint" parameterType="shopDto">
-		UPDATE client_account
-		SET point=point+(SELECT price*0.1 FROM shop WHERE num=#{num})
-		WHERE id=#{id}
-	</update>
+	<select id="getPrice" parameterType="int" resultType="int">
+		SELECT price
+		FROM shop
+		WHERE num=#{num}
+	</select>
 	
 	<insert id="addOrder" parameterType="orderDto">
 		INSERT INTO client_order

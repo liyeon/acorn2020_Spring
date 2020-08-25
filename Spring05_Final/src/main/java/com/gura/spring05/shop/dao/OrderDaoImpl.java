@@ -10,7 +10,7 @@ import com.gura.spring05.shop.dto.OrderDto;
 public class OrderDaoImpl implements OrderDao{
 	@Autowired
 	private SqlSession session;
-	
+	//상품 주문 정보를 저장하는 메소드
 	@Override
 	public void addOrder(OrderDto dto) {
 		session.insert("shop.addOrder", dto);

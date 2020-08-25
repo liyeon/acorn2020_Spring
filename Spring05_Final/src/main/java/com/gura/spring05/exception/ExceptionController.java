@@ -29,6 +29,15 @@ public class ExceptionController {
 	/* @Repository 어노테이션이 붙은 
 	 * dao에서 DB 관련 작업을 하다가 예외가 발생하면 실행 순서가 여기로 들어온다.
 	 */
+	@ExceptionHandler(NoDeliveryException.class)
+	public ModelAndView noDelivery(NoDeliveryException nde) {
+		ModelAndView mView=new ModelAndView();
+		mView.addObject("exception", nde);
+		mView.setViewName("error/no_delivery");
+		return mView;
+	}
+	
+	
 	@ExceptionHandler(DataAccessException.class)
 	public ModelAndView dataAccess(DataAccessException dae) {
 		ModelAndView mView=new ModelAndView();
@@ -36,4 +45,5 @@ public class ExceptionController {
 		mView.setViewName("error/data_access");
 		return mView;
 	}
+	//buy.do->
 }
