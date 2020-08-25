@@ -4,10 +4,12 @@
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 	
 	<!-- 
 		JNDI 데이터 소스 객체 얻어오는 설정   
@@ -30,6 +32,18 @@
 		<beans:constructor-arg name="sqlSessionFactory" 
 			ref="sessionFactory"/>
 	</beans:bean>
+	
+	<!-- Spring Transaction Manager 설정 -->
+	<!-- 
+	txManger=new DataSourceTransactionManager();
+	txManger.setDataSource(dataSource); //property name은 setter메소드를 가리킴 ref는 생성자의 인자를 가르킴
+	 -->
+	<beans:bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<beans:property name="dataSource" ref="dataSource"></beans:property>
+	</beans:bean>
+	
+	<!-- @Transactional 어노테이션으로 트렌젝션을 관리 할 수 있도록 설정-->
+	<tx:annotation-driven transaction-manager="txManager"/>
 	
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
