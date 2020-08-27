@@ -31,7 +31,7 @@
 		<p>msg : <strong ng-bind="msg"></strong></p>
 		<p>obj : <strong>{{obj}}</strong></p>
 		<input type="text" ng-model="obj.height" placeholder="키 입력" />
-		<input type="text" ng-model="obj.weight" placeholder="몸무게 입력" />
+		<input type="text" ng-model="obj.weight" placeholder="몸무게 입력" /><!-- $scope에 있는 모델의 . 을 찍어서 참조한다. -->
 	</div>
 </body>
 </html>

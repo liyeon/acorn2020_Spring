@@ -18,7 +18,7 @@
 		mvvm framework라고도 한다.
 	-->
 	<input ng-model="msg" type="text" placeholder="메세지를 입력해주세요!" />
-	<p>{{msg}}</p>
+	<p ng-bind="msg"></p>
 	<!-- 
 	javascript로만 입력 했을 때
 	document.querySelector().addEventListener("input",

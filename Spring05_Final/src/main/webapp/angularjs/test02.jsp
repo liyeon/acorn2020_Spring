@@ -13,13 +13,13 @@
 </head>
 <!-- ng-app 
 body에서 일어나는 일은  algular로 관리를 하겠다는 의미 -->
-<body ng-app>
+<body ng-app><!-- angular로 관리하는 영역 -->
 <!-- ng-init(초기화)는 count라는 이름의 모델을 만들고 초기값을 0으로 부여하겠다. -->
 <h1 ng-init="count=0">이벤트 처리</h1>
 <!-- var count=0; {count:0} angular가 관리하는 object에 count라는 방을 만들고 0이라는 초기값을 부여한것-->
 
-<!--버튼에 클릭 이벤트가 일어나면 count=count+1이 수행된다.-->
-<button ng-click="count=count+1">눌러보거라</button>
+<!--버튼에 클릭 이벤트가 일어나면 count=count+1이 수행된다.--><!-- 이벤트가 일어나는 요소에 직접 지시어를 써놓는다. -->
+<button ng-click="count=count+1">눌러보거라</button><!-- controller가 관리하는 $scope영역이라고 보면 된다. -->
 <button ng-click="count=0">리셋</button>
 <button ng-click="count=count-1">눌러보거라2</button>
 <!-- 모델값이 바뀌면 view에 자동 반영 -->

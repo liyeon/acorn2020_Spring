@@ -15,17 +15,17 @@
 body에서 일어나는 일은  algular로 관리를 하겠다는 의미 -->
 <body ng-app>
 <div class="container mt-4">
-	<h1 ng-init="a='btn-warning'">클래스 속성 조작하기</h1>
-	<input type="text" ng-model="b" class="form-control mb-2"/><br/>
+	<h1 ng-init="a='btn-warning'">클래스 속성 조작하기</h1><!-- $scope.a='btn-primary' $scope에 문자열을 집어넣는것 {a:'btn-primary' -->
+	<input type="text" ng-model="b" class="form-control mb-2"/><br/><!--입력하거나 선택 한 것을 model로 관리 할 수 있다. $scope.b 자동으로 bind 된다.-->
 	<button class="btn btn-primary">버튼1</button>
 	<button class="btn {{a}}">버튼2</button>
-	<button class="btn {{b}}">버튼3</button>
+	<button class="btn {{b}}">{{b}}</button>
 	<button ng-class="['btn', 'btn-danger']">버튼4</button><!-- 배열형태 -->
 	<!-- 속성을 추가 할지말지 boolean type으로 관리한다. -->
 	<button ng-class="{'btn':true, 'btn-primary':true}">버튼5</button><!-- 오브젝트 형태 -->
 	<br />
 	<br />
-	<input type="checkbox" ng-model="isLarge"/>
+	<input type="checkbox" ng-model="isLarge"/><!-- $scope.isLarge -->
 	<button class="btn btn-success" ng-class="{'btn-lg':isLarge}">버튼</button>
 </div>
 </body>
