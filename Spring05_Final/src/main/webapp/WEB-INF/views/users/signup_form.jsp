@@ -13,7 +13,7 @@
 	var myApp=angular.module("myApp", []);
 	//formCtrl 이라는 컨트롤러 만들기
 	myApp.controller("formCtrl", function($scope, $http){//angularjs가 초기화 될 때 최초 한번만 호출된다.
-		$scope.canUseId=false; //입력한 아이디가 사용 가능한지 여부
+		//$scope.canUseId=false; //입력한 아이디가 사용 가능한지 여부
 		//ng-model에 입력한 id의 값
 		$scope.idChanged=function(){
 			$http({
@@ -23,14 +23,19 @@
 			}).success(function(data){
 				//data => {isExist:true} or {isExist:false} 인 object 이다.
 				//입력한 아이디가 DB에 존재하지 않아야지 사용 할 수 있다.
-				$scope.canUseId=!data.isExist;
+				//$scope.canUseId=!data.isExist;
+				$scope.myForm.id.$valid= !data.isExist;//값을 강제로 집어넣을 수 있다.
+				$scope.myForm.id.$invalid= data.isExist;;
 			});//success 종료
 		};//idChanged 종료
 		//비밀번호 입력란을 입력했을 때 호출되는 함수
-		$scope.isPwdEqual=true;
+		//$scope.isPwdEqual=true;
 		$scope.pwdChanged=function(){
 			//비밀번호를 같게 입력 했는지 여부를 모델로 관리
-			$scope.isPwdEqual=$scope.pwd==$scope.pwd2;
+			$scope.myForm.pwd.$valid=$scope.pwd==$scope.pwd2;//같은지
+			$scope.myForm.pwd.$invalid=$scope.pwd!=$scope.pwd2;//다른지
+			$scope.myForm.pwd2.$valid=$scope.pwd==$scope.pwd2;//같은지
+			$scope.myForm.pwd2.$invalid=$scope.pwd!=$scope.pwd2;//다른지
 		}//pwdChanged
 	});//myApp.controller 종료
 </script>
@@ -38,7 +43,7 @@
 <body>
 	<div class="container mt-4" ng-controller="formCtrl">
 	<h1>회원가입폼입니다.</h1>
-	<p>아이디 사용 가능 여부 : {{canUseId}}</p>
+	<p>아이디 중복 여부 : {{canUseId}}</p>
 		<form action="signup.do" method="post" id="myForm" name="myForm" novalidate>
 			<div class="form-group">
 				<label for="id">아이디</label>
@@ -46,8 +51,8 @@
 					   ng-model="id"
 					   ng-required="true"
 					   ng-pattern="/^[a-z].{4,9}$/"
-					   ng-class="{'is-invalid': (myForm.id.$invalid || !canUseId) && myForm.id.$dirty,
-				   				  'is-valid': myForm.id.$valid && canUseId}"
+					   ng-class="{'is-invalid': myForm.id.$invalid && myForm.id.$dirty,
+				   				  'is-valid': myForm.id.$valid}"
 				   	   ng-change="idChanged()"
 				/>
 				<small class="form-text text-muted">영문자 소문자로 시작하고 최소 5글자~10글자까지 입력가능합니다.</small>
@@ -63,12 +68,12 @@
 					   ng-required="true"
 					   ng-minlength="5"
 					   ng-maxlength="10"
-					   ng-class="{'is-invalid':(myForm.pwd.$invalid || !isPwdEqual ) && myForm.pwd.$dirty,
-					   			  'is-valid':myForm.pwd.$valid && isPwdEqual}"
+					   ng-class="{'is-invalid':myForm.pwd.$invalid  && myForm.pwd.$dirty,
+					   			  'is-valid':myForm.pwd.$valid}"
 					   ng-change="pwdChanged()"
 				/>
 				<small class="form-text text-muted">최소 5글자~10글자이내로 입력하세요!</small>
-				<div class="invalid-feedback">비밀번호를 확인해주세요ㅠㅜ</div>
+				<div class="invalid-feedback">하단의 비밀번호를 확인해주세요!</div>
 			</div>
 			<div class="form-group">
 				<label for="pwd2">비밀번호 확인</label>
@@ -77,8 +82,8 @@
 					   ng-required="true"
 					   ng-minlength="5"
 					   ng-maxlength="10"
-					   ng-class="{'is-invalid':(myForm.pwd2.$invalid || !isPwdEqual ) && myForm.pwd2.$dirty,
-					   			  'is-valid':myForm.pwd2.$valid && isPwdEqual}"
+					   ng-class="{'is-invalid':myForm.pwd2.$invalid && myForm.pwd2.$dirty,
+					   			  'is-valid':myForm.pwd2.$valid}"
 					   ng-change="pwdChanged()"
 				/>
 				<div class="valid-feedback">비밀번호가 동일합니다.</div>
