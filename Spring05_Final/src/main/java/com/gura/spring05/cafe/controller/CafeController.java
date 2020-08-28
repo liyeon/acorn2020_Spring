@@ -1,6 +1,7 @@
 package com.gura.spring05.cafe.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,6 @@ import com.gura.spring05.cafe.service.CafeService;
 public class CafeController {
 	@Autowired
 	private CafeService cafeService;
-	
 	//카페 글 목록 보기 요청 처리
 	@RequestMapping("/cafe/list")
 	public ModelAndView getList(HttpServletRequest request, ModelAndView mView) {
@@ -118,4 +118,11 @@ public class CafeController {
 		mView.setViewName("cafe/ajax_comment_list");
 		return mView;
 	}
+	
+	@RequestMapping("/cafe/ajax_list")
+	@ResponseBody
+	public List<CafeDto> ajaxList(HttpServletRequest request){
+		return cafeService.getList2(request);
+	}
+	
 }//
