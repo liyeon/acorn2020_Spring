@@ -13,7 +13,7 @@
 	var myApp=angular.module("myApp", []);
 	//formCtrl 이라는 컨트롤러 만들기
 	myApp.controller("formCtrl", function($scope, $http){//angularjs가 초기화 될 때 최초 한번만 호출된다.
-		//$scope.canUseId=false; //입력한 아이디가 사용 가능한지 여부
+		$scope.canUseId=false; //입력한 아이디가 사용 가능한지 여부
 		//ng-model에 입력한 id의 값
 		$scope.idChanged=function(){
 			$http({
@@ -23,7 +23,7 @@
 			}).success(function(data){
 				//data => {isExist:true} or {isExist:false} 인 object 이다.
 				//입력한 아이디가 DB에 존재하지 않아야지 사용 할 수 있다.
-				//$scope.canUseId=!data.isExist;
+				$scope.canUseId=!data.isExist;
 				$scope.myForm.id.$valid= !data.isExist;//값을 강제로 집어넣을 수 있다.
 				$scope.myForm.id.$invalid= data.isExist;;
 			});//success 종료
