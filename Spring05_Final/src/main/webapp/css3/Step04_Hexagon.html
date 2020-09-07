@@ -3,14 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>/css3/Step04_Hexagon.html</title>
-</head>
-<body>
 <style>
 	/*directX가 웹브라우저에 설치가 안되어 있으면 3D로 보이지 않는다.*/
 	.wrapper{
 		perspective: 500px;
 		perspective-origin: 50% 50%;
-		margin-top: 346px;
 		border: 1px solid red;
 	}
 	.cube{
@@ -26,11 +23,12 @@
 	/*
 	사각형일때 400px 이면 200px 밀기.
 	6각형일떄는 계산 식이 있다.
+	사이에 빈 공간을 주고  싶을 때는 translateZ를 더 추가 하면 된다.
 	*/
 	}
 	.cube > div{
 		position: absolute;
-		width: 400px;
+		width:400px;
 		height: 400px;
 		opacity: 1.0;/* 투명도 */
 		background-color: #2e272f;
@@ -86,15 +84,19 @@
 <script>
 	//y축회전값을 저장할 변수 만들고 0으로 초기화
 	var rY=0;
-	//축을 기준으로 시계방향이 + 반 시계방향이 - 
+	
+	//회전 하게 할지에 대한 여부
+	var isRotate=true;
+	
+	//y축을 기준으로 시계방향이 + 반 시계방향이 - 
 	$("#prevBtn").click(function(){
-		//rY값 180증가 시키기 
+		//rY값 60증가 시키기 
 		rY += 60; 
 		rotate();
 	});
 		
 	$("#nextBtn").click(function(){
-		//rY값 1805증가 시키기 
+		//rY값 60증가 시키기 
 		rY -= 60;
 		rotate();
 	});
@@ -103,6 +105,24 @@
 		$(".cube").css("transform", "translateZ(-346px) rotateY("+rY+"deg");
 	}
 	
+	$(".cube").on("mouseover", function(){
+		//회전하지 않도록
+		isRotate=false;
+	});
+	
+	$(".cube").on("mouseout", function(){
+		//회전하도록
+		isRotate=true;
+	});
+	
+	//함수를 3초마다 한번씩 호출하기 
+	setInterval(function(){
+		if(!isRotate){//만일 회전하지 않을거면 
+			return;//함수를 여기서 끝내라 
+		}
+		rY -= 60;
+		rotate();
+	}, 3000);
 	/*
 		n각형과 한변의 길이가 width 일 때 몇도씩 돌면서 z 축 방향으로 얼마만큼 평행이동하면 되는지에
 		대한 정보를 담고 있는 object를 리턴하는 함수
