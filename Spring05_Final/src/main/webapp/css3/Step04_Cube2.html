@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Step04_cube.html</title>
+<style>
+	/*directX가 웹브라우저에 설치가 안되어 있으면 3D로 보이지 않는다.*/
+	.wrapper{
+		perspective: 500px;
+		perspective-origin: 50% 50%;
+		margin-top: 200px;
+		border: 1px solid red;
+	}
+	.cube{
+		transform-style: preserve-3d;
+		transform-origin: 50% 50%;
+		position: relative;
+		width: 400px;
+		height: 400px;
+		margin: 0 auto; /* 가운데 정렬 */
+		transition: all 0.5s ease-out;
+		/* .cube > div 를 앞으로 밀기 전에 .cube를 뒤로 200px 밀어 넣기 */
+		transform: translateZ(-200px); /* 밀지 않으면 나를 향하는 방향으로 확대가 된다. 정상적인 위치로 부터 200px을 다가온거기 때문에 방지하기 위해 뒤로 밀어준다.*/
+	/*
+	사각형일때 400px 이면 200px 밀기.
+	6각형일떄는 계산 식이 있다.
+	*/
+	}
+	.cube > div{
+		position: absolute;
+		width: 400px;
+		height: 400px;
+		opacity: 0.6;/* 투명도 */
+		background-color: #2e272f;
+	}
+	.cube img{
+		width: 400px;
+		height: 400px;
+	}
+	.cube > div:nth-child(1){
+		transform: translateZ(200px);/*z축 앞으로 200px 밀어버림*/ 
+	}
+	.cube > div:nth-child(2){
+		transform: rotateY(90deg) translateZ(200px); /*y측 방향으로 90도 돌린 후 돌린 방향에서 z축 앞으로 200px 밀어버림*/ 
+	}
+	.cube > div:nth-child(3){
+		transform: rotateY(180deg) translateZ(200px);
+	}
+	.cube > div:nth-child(4){
+		transform: rotateY(270deg) translateZ(200px);
+	}
+	.cube > div:nth-child(5){
+		transform: rotateX(90deg) translateZ(200px); /*x축으로 90도돌린 후 200픽셀 밈*/
+	}
+	.cube > div:nth-child(6){
+		transform: rotateX(-90deg) translateZ(200px);/* 밑 으로 90도 돌린 후 200픽셀 */
+	}
+	.control{
+		/* 인라인 요소의 가운데 정렬 */
+		text-align: center;
+	}		
+</style>
+</head>
+<body>
+<div class="wrapper">
+	<div class="cube">
+		<div><img src="../resources/images/image7.png"></div>
+		<div><img src="../resources/images/image2.png"></div>
+		<div><img src="../resources/images/image3.png"></div>
+		<div><img src="../resources/images/image4.png"></div>
+		<div><img src="../resources/images/image5.png"></div>
+		<div><img src="../resources/images/image6.png"></div>
+	</div>
+</div>
+<div class="control">
+	<button id="prevBtn">&larr;</button>
+	<button id="nextBtn">&rarr;</button>
+</div>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus, earum, debitis. Consectetur inventore quaerat aperiam nihil minima, vitae laudantium, ut animi illum blanditiis cum earum, fugiat nisi ipsam dolore possimus.</p>			
+
+<script src="../resources/js/jquery-3.5.1.js"></script>
+<script>
+	//y축회전값을 저장할 변수 만들고 0으로 초기화
+	var rY=0;
+	//축을 기준으로 시계방향이 + 반 시계방향이 - 
+	$("#prevBtn").click(function(){
+		//rY값 180증가 시키기 
+		rY += 90; 
+		rotate();
+	});
+		
+	$("#nextBtn").click(function(){
+		//rY값 1805증가 시키기 
+		rY -= 90;
+		rotate();
+	});
+	
+	function rotate(){
+		$(".cube").css("transform", "translateZ(-200px) rotateY("+rY+"deg");
+	}
+</script>
+</body>
+</html>
+</html>

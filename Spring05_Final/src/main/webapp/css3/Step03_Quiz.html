@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>/css3/Step03_Quiz.html</title>
+<style>
+	.wrapper{
+		text-align : center;
+	}
+	.wrapper img{
+		transition : transform 0.4s ease-out;
+	}
+</style>
+</head>
+<body>
+<h1>transform 테스트</h1>
+	<button id="leftBtn">좌</button>
+	<button id="rightBtn">우</button>
+	<button id="rotateBtn">회전</button>
+<div class="wrapper">
+	<img src="../resources/images/puff5.png" alt="" />
+</div>
+
+<script src="../resources/js/jquery-3.5.1.js"></script>
+<script>
+	//hint
+	//var x=50;
+	//var angle=45;
+	
+	/*
+		좌버튼을 누르면 왼쪽으로 50px
+		우 버튼을 부르면 오른쪽으로 50px
+		회전 버튼을 누르면 45도씩 시계방향으로 회전하게끔
+	*/
+	
+	//x축 방향 평행 이동값
+	var x=0;
+	//회전 값
+	var angle=0;
+	
+	$("#leftBtn").on("click", function(){
+		x -= 50;
+		move();
+	});
+	
+	$("#rightBtn").on("click", function(){
+		x += 50;
+		move();
+	});
+	
+	$("#rotateBtn").on("click", function(){
+		angle += 45;
+		move();
+	});
+	
+	//이미지를 움직이는 함수
+	function move(){
+		$(".wrapper img").css("transform", "translateX("+ x +"px) rotate("+angle+"deg");
+	}
+	//위에는 인라인 css가 적용이 되는 것. 속성명, 속성 값 
+</script>
+</body>
+</html>

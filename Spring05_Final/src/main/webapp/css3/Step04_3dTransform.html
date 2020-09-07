@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>/css3/Step04_3dTransform.html</title>
+<style>
+/*3차원 트렌스폼 */
+	.wrapper{
+		margin : 20px 0;
+		/* 컨텐츠와 내 시선 사이의 거리 */
+		perspective: 500px; /* 원금감이 느껴지려면 상하의 거리의 차이가 많이 나야 원금감이 느껴진다. 500~1000px 사이의 거리가 적당하다. perspective 가상의 거리를 설정해준다. 시선이 가까우면 왜곡이 심하다.*/
+		/* .wrapper 에서의  시선의 위치 (원점)*/
+		perspective-origin: 50% 50%; /* 50 50은 정중앙  0 0 왼쪽 맨 위, 100 0 오른쪽 맨 위,   시선의 위치를 결정해준다.*/
+		border: 1px solid blue;
+	}
+	.target{
+		/* 3d transform 을 하겠다고 선언 */
+		transform-style: preserve-3d;
+		/* .target 에서 x, y, z 축이 만나는 위치 z는 나를 향하는 방향 y를 기준으로 회전은 좌우 */
+		transform-origin: 50% 50%;/*default */
+		width: 200px;
+		height : 200px;
+		margin: 0 auto;
+		border: 1px solid green;
+		transition: transform 0.4s ease-out;
+	}
+	.target img{
+		max-width: 100%;
+		width : 100%;
+		height : 100%;
+		object-fit: cover;
+	}
+	#one:hover{
+		transform: rotateX(45deg);
+	}
+	#two:hover{
+		transform: rotateY(45deg);
+	}
+	#three:hover{
+		transform: rotateZ(45deg);
+	}
+	</style>
+</head>
+<body>
+<!--
+3D place(wrapper) 로 만들고 그 안에 있는 걸 3d transform (target)
+회전과 평행이동
+1. rotateX
+2. rotateY
+3. rotateZ
+4. translateX
+5. translateY
+6. translateZ
+-->
+<div class="wrapper">
+	<div class="target" id="one">
+		<img src="https://blog.kakaocdn.net/dn/cnjj56/btqHvJRg9GI/lN2K7TKgUbzcM1Mbg6LnZK/img.gif"/>
+	</div>
+</div>
+<div class="wrapper">
+	<div class="target" id="two">
+		<img src="https://blog.kakaocdn.net/dn/bBTXgJ/btqHujFitXo/bODZt4pSBtb1dSOntk80O1/img.gif"/>
+	</div>
+</div>
+<div class="wrapper">
+	<div class="target" id="three">
+		<img src="https://blog.kakaocdn.net/dn/crjsf7/btqHy48ulcz/Y8wDYxduME1sShZbhVkGI0/img.gif"/>
+	</div>
+</div>	
+</body>
+</html>

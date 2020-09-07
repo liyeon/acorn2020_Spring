@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>/css3/Step04_Hexagon.html</title>
+</head>
+<body>
+<style>
+	/*directX가 웹브라우저에 설치가 안되어 있으면 3D로 보이지 않는다.*/
+	.wrapper{
+		perspective: 500px;
+		perspective-origin: 50% 50%;
+		margin-top: 346px;
+		border: 1px solid red;
+	}
+	.cube{
+		transform-style: preserve-3d;
+		transform-origin: 50% 50%;
+		position: relative;
+		width: 400px;
+		height: 400px;
+		margin: 0 auto; /* 가운데 정렬 */
+		transition: all 0.5s ease-out;
+		/* .cube > div 를 앞으로 밀기 전에 .cube를 뒤로 346px 밀어 넣기 */
+		transform: translateZ(-346px); /* 밀지 않으면 나를 향하는 방향으로 확대가 된다. 정상적인 위치로 부터 346px을 다가온거기 때문에 방지하기 위해 뒤로 밀어준다.*/
+	/*
+	사각형일때 400px 이면 200px 밀기.
+	6각형일떄는 계산 식이 있다.
+	*/
+	}
+	.cube > div{
+		position: absolute;
+		width: 400px;
+		height: 400px;
+		opacity: 1.0;/* 투명도 */
+		background-color: #2e272f;
+	}
+	.cube img{
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.cube > div:nth-child(1){
+		transform: translateZ(346px);/*z축 앞으로 346px 밀어버림*/ 
+	}
+	.cube > div:nth-child(2){
+		transform: rotateY(60deg) translateZ(346px); /*y측 방향으로 60도 돌린 후 돌린 방향에서 z축 앞으로 346px 밀어버림*/ 
+	}
+	.cube > div:nth-child(3){
+		transform: rotateY(120deg) translateZ(346px);
+	}
+	.cube > div:nth-child(4){
+		transform: rotateY(180deg) translateZ(346px);
+	}
+	.cube > div:nth-child(5){
+		transform: rotateY(240deg) translateZ(346px); /*x축으로 60도돌린 후 346픽셀 밈*/
+	}
+	.cube > div:nth-child(6){
+		transform: rotateY(300deg) translateZ(346px);/* 밑 으로 90도 돌린 후 346픽셀 */
+	}
+	.control{
+		/* 인라인 요소의 가운데 정렬 */
+		text-align: center;
+	}		
+</style>
+</head>
+<body>
+<div class="wrapper">
+	<div class="cube">
+		<div><img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F0LSVM%2FbtqHwghtTWY%2FBooZqN6bRqHVOaE0FYr4K1%2Fimg.gif"></div>
+		<div><img src="https://blog.kakaocdn.net/dn/Yzp8v/btqHy568dRY/AQPLUgwU8lfkiHHJXOgL11/img.gif"></div>
+		<div><img src="https://blog.kakaocdn.net/dn/cnjj56/btqHvJRg9GI/lN2K7TKgUbzcM1Mbg6LnZK/img.gif"></div>
+		<div><img src="https://blog.kakaocdn.net/dn/crjsf7/btqHy48ulcz/Y8wDYxduME1sShZbhVkGI0/img.gif"></div>
+		<div><img src="https://blog.kakaocdn.net/dn/FtOBm/btqHvKJqkIO/FxY2dYZR19uvw4q5G1uKf1/img.gif"></div>
+		<div><img src="https://blog.kakaocdn.net/dn/cT38Mu/btqHjqW6JZL/xfQW2soKeXZ4alepKOKqT0/img.gif"></div>
+	</div>
+</div>
+<div class="control">
+	<button id="prevBtn">&larr;</button>
+	<button id="nextBtn">&rarr;</button>
+</div>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus, earum, debitis. Consectetur inventore quaerat aperiam nihil minima, vitae laudantium, ut animi illum blanditiis cum earum, fugiat nisi ipsam dolore possimus.</p>			
+
+<script src="../resources/js/jquery-3.5.1.js"></script>
+<script>
+	//y축회전값을 저장할 변수 만들고 0으로 초기화
+	var rY=0;
+	//축을 기준으로 시계방향이 + 반 시계방향이 - 
+	$("#prevBtn").click(function(){
+		//rY값 180증가 시키기 
+		rY += 60; 
+		rotate();
+	});
+		
+	$("#nextBtn").click(function(){
+		//rY값 1805증가 시키기 
+		rY -= 60;
+		rotate();
+	});
+	
+	function rotate(){
+		$(".cube").css("transform", "translateZ(-346px) rotateY("+rY+"deg");
+	}
+	
+	/*
+		n각형과 한변의 길이가 width 일 때 몇도씩 돌면서 z 축 방향으로 얼마만큼 평행이동하면 되는지에
+		대한 정보를 담고 있는 object를 리턴하는 함수
+	*/
+	function getAngleNtz(n, width) { //사각형이고, 한 변의 길이가 400 픽셀 
+	    var angle = Math.round(360 / n);
+	    var tz = Math.round((width / 2) / Math.tan((angle * Math.PI) / (2 * 180)));
+	    var obj = {
+	      angle: angle,
+	      tz: tz
+	    };
+	    return obj;
+	  }
+</script>
+</body>
+</html>
