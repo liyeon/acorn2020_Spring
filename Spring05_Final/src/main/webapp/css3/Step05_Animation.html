@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>/css3/Step05_Animation.html</title>
+<style>
+	.box{
+		width: 100px;
+		height: 100px;
+		background-color: aqua;
+		border: 1px solid red;
+	}
+	
+	.box:hover{
+		animation-name : myAni;
+		animation-duration: 3s; /* 얼마의 시간 동안 진행을 할 것인지 */
+		animation-timing-function: linear; /* 변화를 줄 때 어떤 비율로 할 것인지. */
+		/* animation반복횟수 */
+		animation-iteration-count:2;/* default값이 1 반복할 횟수 */
+		/* animation 진행 방향 normal | reverse | alternate 앞으로 갔다가 뒤로 감  */
+		animation-direction: alternate;
+		/* animation : myAni 3s linear 4 alternate; */
+	}
+	
+	/* 애니메이션 키프레임 정의 하기 */
+	@keyframes myAni{
+		0%{
+			background-color: aqua;
+			transform: rotate(0deg) scale(1.0);
+		}
+		50%{
+			background-color : #f0f;
+			transform: rotate(180deg) scale(0.5);
+		}
+		100%{
+			background-color : #ff0;
+			transform: rotate(360deg) scale(1.5);
+		}
+	}
+</style>
+</head>
+<body>
+<!-- 
+	두가지의 상태에 대해서 이동을 줄 때는 transition이지만 
+	animation은 상태를 얼마든지 여러 단계를 거쳐서 변화하게 할 수 있다. 
+ -->
+ <h1>animation 테스트</h1>
+ <div class="box"></div>
+</body>
+</html>

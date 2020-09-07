@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>/css3/Step05_AnimateCss.html</title>
+<!-- animate.style css로딩 -->
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+<style>
+	.container{
+		width : 768px;
+		margin : 300px auto 0;
+		text-align : center; /* 글자의 가운데에서 부터 흔든다. Y축이 가운데*/
+	}
+/*
+	페이지가로딩되는 시점에 애니메이션이 로딩된다.
+*/
+</style>
+</head>
+<body>
+<div class="container">
+	<h1 class="animate__animated animate__zoomIn">Animation Me!</h1>
+	<button id="myBtn" class="animate__animated">마우스를 올려보세요!</button>
+	<button id="yourBtn" class="animate__animated">마우스를 올려보세요!</button>
+</div>
+<script src="../resources/js/jquery-3.5.1.js"></script>
+<script>
+	$("#myBtn").on("mouseover", function(){
+		$(this).addClass("animate__swing");
+	});
+	//keyFrame이 끝나면 animationend라는 이벤트가 발생을 한다.
+	//그 이벤트가 끝나면 클래스를 한번만 제거해주세요
+	$("#yourBtn").on("mouseover", function(){
+		$(this).addClass("animate__swing")
+		.one("animationend", function(){
+			$(this).removeClass("animate__swing");
+		});
+	});
+</script>
+</body>
+</html>
+
