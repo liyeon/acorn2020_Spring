@@ -26,17 +26,20 @@
 <body>
 <div class="container">
 	<h1 class="animate__animated animate__zoomIn">Animation Me!</h1>
-	<h1 id="one" class="animate__animated animate__zoomIn">Animation Me!</h1>
+	<h1 id="one" class="animate__animated animate__heartBeat">Animation Me!</h1>
 	<button id="myBtn" class="animate__animated">마우스를 올려보세요!</button>
 	<button id="yourBtn" class="animate__animated">마우스를 올려보세요!</button>
 </div>
 <script src="../resources/js/jquery-3.5.1.js"></script>
 <script>
 	$("#myBtn").on("mouseover", function(){
+		//한번만 동작한다. 
 		$(this).addClass("animate__swing");
 	});
 	//keyFrame이 끝나면 animationend라는 이벤트가 발생을 한다.
-	//그 이벤트가 끝나면 클래스를 한번만 제거해주세요
+	//그 이벤트가 끝나면 클래스를 한번(one)만 제거해주세요
+	//on을 해도 동작에 문제는 없으나 너무 중복으로 실행되기 때문에 one으로 해준다.
+	//여러번 동작한다.
 	$("#yourBtn").on("mouseover", function(){
 		$(this).addClass("animate__swing")
 		.one("animationend", function(){
