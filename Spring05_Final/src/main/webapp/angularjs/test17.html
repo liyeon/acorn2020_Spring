@@ -29,10 +29,10 @@
 		}];
 	});
 	//싱글 페이지 라우터를 사용하기 위한 설정 
-	myApp.config(function($routeProvider){
+	myApp.config(function($routeProvider){//config 함수에서 $routeProvider를 주입받는다.
 		//home 일 때 어떻게 할 것인지
 		$routeProvider
-		.when("/home",{templateUrl:"include/home.html"})
+		.when("/home",{templateUrl:"include/home.html"})//when 메소드는 $route의 메소드가 아니라 $routeProvider의 메소드다.
 		.when("/user_list",{templateUrl:"include/user_list.html", controller:"userListCtrl"})
 		.otherwise({redirectTo:"/home"});//위에서 작성한 컨트롤러의 이름을 적어주면 위의 컨트롤러로 user_list.html을 제어하겠다는 뜻이다. 
 		//otherwise when을 아직 선택하지 않았거나 없는 파일 링크를 선택 했을때 실행할 파일
