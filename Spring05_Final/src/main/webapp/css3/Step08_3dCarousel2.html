@@ -5,12 +5,12 @@
 <title>/css3/Step08_3dCarousel.html</title>
 <style>
 	.container{
-		width: 70%;
+		width: 80%;
 		margin: 0 auto;
 	}
 	/* .wrapper를 3d 공간으로 만들기 */
 	.wrapper{
-		perspective: 800px;
+		perspective: 1000px;
 		perspective-origin: 50% 50%;
 		
 	}
@@ -18,6 +18,7 @@
 		transform-style: preserve-3d;
 		position: relative;
 		height: 700px;
+		
 	}
 	/* transition을 동적으로 적용하기 위해 */
 	.transition-effect{
@@ -28,6 +29,8 @@
 		height: 700px;
 		border: 1px solid #000;
 		text-align: center;
+		/* 뒷면이 투과되어 보이게 할지에 대한 여부 */
+		backface-visibility: hidden;
 	}
 	
 	.control{
