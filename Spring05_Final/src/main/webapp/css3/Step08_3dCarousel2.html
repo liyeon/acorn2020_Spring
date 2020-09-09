@@ -85,7 +85,8 @@
 	</div>
 	
 	
-<script src ="../resources/js/jquery-3.5.1.js"></script>	
+<script src ="../resources/js/jquery-3.5.1.js"></script>
+<!-- jquery plugin -->
 <script src="../resources/js/jquery.touchSwipe.js"></script>
 <script>
 	//z 축 평행이동값과 
@@ -169,28 +170,85 @@
 		};
 		return obj;
 	}
+	
+	// 터치가 시작된 시점의 rY 를 저장할 변수
+	var startRY=0;
+	// carousel을 현재 움직이고 있는지 여부 
+	var isMoving=false;
+	
+	
 	// .carousel 에 일어나는 터치 이벤트(마우스이벤트 겸용 )처리하기 
+	//swipe 이벤트 처리하기
 	$(".carousel").swipe({
-		swipeStatus:function(event, phase, direction, distance){
+		//swipe의 object에 swipeStatus 라는 방에 함수를 전달해준다. 
+		swipeStatus:function(event,phase,direction,distance){
 			$("#phase").text(phase);
 			$("#direction").text(direction);
 			$("#distance").text(distance);
 			
-			//hint
+			
+			
 			switch(phase){
-			case "start":
-				 break;
-			case "move":
-				 break;
-			case "end":
-				 break;
-			case "cancel":
-				 break;
-			}
+				case "start":
+					//transition 제거
+					$(".carousel").removeClass("transition-effect");
+					//터치 시작된 시점의 rY 를 변수에 저장한다.
+					startRY = rY;
+					//carousel 을 움직이고 있는 상태로 바꿔준다. 
+					isMoving=true;
+					break;
+				case "move":
+					if(!isMoving)return; //움직이고 있는 상태가 아니라면 함수를 여기서 종료
+					if(direction=="left"){
+						//스와이프한 거리에 비례해서 rY 에 반영한다.
+						rY = startRY - distance/8;
+					}else if(direction=="right"){
+						rY = startRY + distance/8; //swipe 한 만큼 더하거나 빼줘서
+					}
+					//.carousel 회전 시키기
+					rotate();
+					break;
+				case "end":
+					isMoving=false;
+					//transition 효과 추가 하기
+					$(".carousel").addClass("transition-effect");
+					if(direction=="left"){
+					  rY = startRY - angle;
+					}else if(direction=="right"){
+					  rY = startRY + angle;
+					}
+					rotate();
+					break;
+				case "cancel":
+					isMoving=false;
+					$(".carousel").addClass("transition-effect");
+					//취소 되었을때는 원상 복구 
+					rY = startRY;
+					rotate();
+					break;
+			}//=====switch
+		},
+		allowPageScroll:"vertical",//위 아래로 스크롤 됐을 때는 swipe가 먹지 않는다. 
+		//아래 위로 화면을 스크롤 가능하도록 
+		threshold:100 //역치를 100px (100px 이상 움직여야 end 로 판정된다. )
+		
+	});//====swipe
+	$(".carousel").on("mouseout", function(){
+		if(isMoving){//움직이고 있는 상태에서만
+			//아래의 작업을 해준다. 
+			isMoving=false;
+			$(".carousel").addClass("transition-effect");
+			//취소 되었을때는 원상 복구 
+			rY = startRY;
+			rotate();
 		}
+		
 	});
-	
 	/*
+		rY = rotateY deg 각도 0~360도의 각도
+		distance : pixel  대략 8로 나눈다..
+		최종 ry값은 최초(startRy) ry 값을 빼주거나 나누거라로 나눈다. 
+		left : -60, right : +60, cancel : 0
 		phase : 위상/단계 역치값은 default 75px  move, cancel(조금 움직이거나 누르자마자 뗐을 때 ))), end(역치값이 넘어 갔을 때 ), start
 		direction : 방향 left, right, up, down
 		distance : 거리...
