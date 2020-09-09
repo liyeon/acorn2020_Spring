@@ -21,7 +21,27 @@
 		}).success(function(data){
 			$scope.list=data;
 		});//success
+		/*
+		jquery 일 때
+		$.ajax({
+			url:"xxx.do",
+			method:"get".
+			data:{pageNum:x},
+			succcess:function(data){
+				
+			}
+			특정 요청에 대해서 응답되는 문자열은 json 이다.
+			ajax_list.do 는 json형식의 문자열을 출력해준다. 
+			서버가 html형식의 문자열을 응답을 한 걸 웹브라우저가 해석을 해서 출력을 해준다. 
+		});
 		
+		html은 틀 안에 데이터가 녹아 들어가 있는 상태
+		json은 틀이 없고 데이터 그 자체만 들어가 있다. 
+		
+		틀을 미리 만들고 에이젝스 요청에 대해서 데이터를 응답
+		page loading -> template (틀 )
+		ajax request(요청 ) -> json (data )
+		*/
 		//다음 페이지 버튼을 눌렀을 때 호출된 함수 새로 고침 없이 가능 
 		$scope.next=function(){
 			$scope.pageNum++;
@@ -33,6 +53,17 @@
 				$scope.list=data;
 			});
 		};//next()
+		
+		$scope.prev=function(){
+			$scope.pageNum--;
+			$http({
+				url:"../cafe/ajax_list.do",
+				method:"get",
+				params:{pageNum:$scope.pageNum}
+			}).success(function(data){
+				$scope.list=data;
+			});
+		};//prev()
 	});
 </script>
 </head>
@@ -59,6 +90,7 @@
 				</tr>
 			</tbody>
 		</table>
+		<button ng-click="prev()" class="btn btn-outline-primary">이전 페이지</button>
 		<button ng-click="next()" class="btn btn-outline-primary">다음 페이지</button>
 	</div>
 </body>

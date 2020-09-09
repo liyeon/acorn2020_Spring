@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>/angularjs/test15.html</title>
+<!-- animate.style css로딩 -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.css"/>
+<style>
+	/* out-animation 클래스를 가지고 있는 요소가 제거 될 때 적용할 animation */
+	.out-animation.ng-leave{
+		animation: bounceOutRight 1s linear;
+	}
+	/* in-animation 클래스를 가지고 있는 요소가 만들어 질 때 적용할 animation */
+	.in-animation.ng-enter{
+		animation: bounceInDown 0.4s ease-out;
+	}
+</style>
+</head>
+<!-- angularjs 로딩시키기 -->
+<script type="text/javascript" src="../resources/js/angular.min.js"></script>
+<!-- angularjs 의 확장팩, 추가 모듈 -->
+<script type="text/javascript" src="../resources/js/angular-animate.min.js"></script>
+<script>//순간적으로 애니메이션 효과를 사용 하고 싶을 때 ngAnimate를 사용한다.
+	var myApp=angular.module("myApp", ["ngAnimate"]); //추가 모듈을 사용하려면 []안에 적어야 사용가능 
+	myApp.controller("one", function($scope){
+		$scope.msgList=[];
+		$scope.addClicked=function(){
+			$scope.msgList.push({msg:$scope.inputMsg}); //문자열을 저장하는게 아니고 오브젝트를 저장해야 ng-repeat 할 때 오류가 안 난다. 
+			$scope.inputMsg="";  
+		};
+	});
+</script>
+<body ng-controller="one">
+	<h2>ngAnimation 테스트</h2>
+	<input type="checkbox" ng-model="isMake" /><br/>
+	<!-- checkbox가 체크되고 해제 될 때 동적으로, 순간적으로 img 요소에 ng-leave와 ng-enter 클래스가 생긴다.  -->
+	<img src="../resources/images/puff4.png" class="in-animation out-animation" ng-if="isMake" /><!-- 만약 체크박스가 true면 만들고 false 면 만들지 않는다  -->
+	<h2>ul에 메세지 추가하기</h2>
+	<input type="text" ng-model="inputMsg" placeholder="메세지 입력" />
+	<button ng-click="addClicked()">추가</button>
+	<ul>
+	<!-- 배열에 있는걸 ng-repeat 에서 사용 할 때 동일한 value면 오류가 난다.  -->
+		<li class="in-animation"
+			ng-repeat="tmp in msgList">{{tmp.msg}}</li>
+	</ul>
+</body>
+</html>

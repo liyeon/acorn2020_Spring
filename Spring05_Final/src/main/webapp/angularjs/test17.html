@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>/angularjs/test17.html</title>
+<!-- favicon 404 error -->
+<link rel="shortcut icon" href="#">
+<!-- angularjs 로딩시키기 -->
+<script type="text/javascript" src="../resources/js/angular.min.js"></script>
+<script type="text/javascript" src="../resources/js/angular-route.min.js"></script>
+<script>
+	//모듈 만들기
+	var myApp=angular.module("myApp", ["ngRoute"]);
+	//controller 만들기 
+	myApp.controller("userListCtrl", function($scope){
+		//sample data
+		$scope.userList=[{
+			name:"김구라",
+			email:"aaa@",
+			regdate:"2020"
+		},{
+			name:"해골",
+			email:"bbb@",
+			regdate:"2020"
+		},{
+			name:"원숭이",
+			email:"ccc@",
+			regdate:"2020"
+		}];
+	});
+	//싱글 페이지 라우터를 사용하기 위한 설정 
+	myApp.config(function($routeProvider){
+		//home 일 때 어떻게 할 것인지
+		$routeProvider
+		.when("/home",{templateUrl:"include/home.html"})
+		.when("/user_list",{templateUrl:"include/user_list.html", controller:"userListCtrl"})
+		.otherwise({redirectTo:"/home"});//위에서 작성한 컨트롤러의 이름을 적어주면 위의 컨트롤러로 user_list.html을 제어하겠다는 뜻이다. 
+		//otherwise when을 아직 선택하지 않았거나 없는 파일 링크를 선택 했을때 실행할 파일
+	});
+
+</script>
+<!-- 페이지 전체가 이동하지 않고 부분 업데이트가 된다. -->
+<body ng-controller="userListCtrl">
+	<div class="container">
+	<h1>router테스트 입니다. </h1>
+		<ul class="nav">
+			<li>
+				<a href="#home">홈</a>
+			</li>
+			<li>
+				<a href="#user_list">회원목록</a>
+			</li>
+		</ul>
+	</div>
+	<ng-view></ng-view>
+</body>
+</html>
