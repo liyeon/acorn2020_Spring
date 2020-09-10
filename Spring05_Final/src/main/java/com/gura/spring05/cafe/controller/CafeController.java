@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gura.spring05.cafe.dao.CafeDao;
 import com.gura.spring05.cafe.dto.CafeCommentDto;
 import com.gura.spring05.cafe.dto.CafeDto;
 import com.gura.spring05.cafe.service.CafeService;
@@ -125,4 +126,16 @@ public class CafeController {
 		return cafeService.getList2(request);
 	}
 	
+	//angular js test용
+	@Autowired
+	private CafeDao cafeDao;
+	
+	//$http success 라는 곳에 json문자열이 object 형식으로  변환이 돼서 들어다.
+	//param으로 번호를 읽어오고 responseBody 로 변환을 해서
+	@RequestMapping("/cafe/ajax_detail")
+	@ResponseBody
+	public CafeDto ajaxDetail(@RequestParam int num){
+		return cafeDao.getData(num);
+	}
+
 }//

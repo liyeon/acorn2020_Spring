@@ -1,0 +1,24 @@
+<h2>카페 글 자세히 보기 </h2>
+<table class="table table-hover">
+	<tr>
+		<th>제목</th>
+		<td>
+		<!-- $scope.cafeDto object -->
+			{{cafeDto.title}}
+		</td>
+	</tr>
+	<tr>
+		<th>작성자</th>
+		<td>
+			{{cafeDto.writer}}
+		</td>
+	</tr>
+	<tr>
+		<th>등록일</th>
+		<td data-ng-bind="cafeDto.regdate">
+		</td>
+	</tr>
+</table>
+	<div ng-bind="cafeDto.content">
+	</div>
+	<button data-ng-click="goList()" class="btn btn-info">목록 보기</button>

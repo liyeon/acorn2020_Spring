@@ -13,7 +13,8 @@
 		<tr data-ng-repeat="tmp in cafeList">
 			<td>{{tmp.num}}</td>
 			<td>{{tmp.writer}}</td>
-			<td>{{tmp.title}}</td>
+			<!-- 같은 페이지 내에서의 이동으로 링크를 건 것  -->
+			<td><a href="#cafe_detail/{{tmp.num}}">{{tmp.title}}</a></td>
 			<td data-ng-bind="tmp.regdate"></td>
 		</tr>
 	</tbody>
