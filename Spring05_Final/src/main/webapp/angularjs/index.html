@@ -145,7 +145,7 @@
 </div>
 
 <!-- modal -->
-<div class="modal" tabindex="-1" data-ng-show="isShowModal" ng-class="{fade:isShowModal, show:isShowModal}" style="display:block;">
+<div class="modal" tabindex="-1" data-ng-show="isShowModal" style="display:block;">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -176,5 +176,7 @@
 		</div><!-- modal-content -->
 	</div><!-- modal-dialog -->
 </div><!-- modal -->
+<div class="modal-backdrop show" ng-show="isShowModal"></div>
+</body>
 </body>
 </html>
