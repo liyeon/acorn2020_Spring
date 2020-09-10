@@ -1,16 +1,28 @@
 <!DOCTYPE html>
-<html ng-app="myApp">
+<html data-ng-app="myApp">
 <head>
 <meta charset="UTF-8">
 <title>/angularjs/test17.html</title>
 <!-- favicon 404 error -->
 <link rel="shortcut icon" href="#">
+<!-- animate.style css로딩 -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.css"/>
+<style>
+	/* page-change-animation 클래스를 가지고 있는
+	   요소가 만들어 질 때 적요할 애니메이션 */
+	.page-change-animation.ng-enter{
+		animation: fadeIn 0.4s ease-out;
+	}
+</style>
 <!-- angularjs 로딩시키기 -->
 <script type="text/javascript" src="../resources/js/angular.min.js"></script>
+<!-- angularjs 의 확장팩, 추가 모듈 -->
 <script type="text/javascript" src="../resources/js/angular-route.min.js"></script>
+<script type="text/javascript" src="../resources/js/angular-animate.min.js"></script>
 <script>
 	//모듈 만들기
-	var myApp=angular.module("myApp", ["ngRoute"]);
+	var myApp=angular.module("myApp", ["ngRoute", "ngAnimate"]);
 	//controller 만들기 
 	myApp.controller("userListCtrl", function($scope){
 		//ajax로 받아올 sample data
@@ -40,7 +52,7 @@
 
 </script>
 <!-- 페이지 전체가 이동하지 않고 부분 업데이트가 된다. -->
-<body ng-controller="userListCtrl">
+<body data-ng-controller="userListCtrl">
 	<div class="container">
 	<h1>router테스트 입니다. </h1>
 		<ul class="nav">
@@ -52,6 +64,6 @@
 			</li>
 		</ul>
 	</div>
-	<ng-view></ng-view>
+	<div data-ng-view class="page-change-animation"></div>
 </body>
 </html>
