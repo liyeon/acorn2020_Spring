@@ -20,4 +20,7 @@ public interface UsersService {
 	public void updateUser(HttpSession session, UsersDto dto);
 	public void updateUserPwd(HttpSession session, UsersDto dto, ModelAndView mView);
 	
+	
+	//ajax요청으로 로그인 폼 요청처리
+	public Map<String, Object> ajaxLoginProcess(UsersDto dto, HttpSession session);
 }//
