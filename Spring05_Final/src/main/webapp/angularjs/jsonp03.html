@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html data-ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>jsonp03.html</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.32/angular.min.js"></script>
+<script>
+	var myApp=angular.module("myApp", []);
+	myApp.controller("one", function($scope, $http){
+		//회원정보얻어오기 버튼을 누르면 호출되는 함수 
+		$scope.getInfo=function(){
+			var url="http://localhost:8989/spring05/angularjs/jsonp01.jsp?callback=JSON_CALLBACK";
+			//?callback=JSON_CALLBACK 을 입력해야 콜백 함수가 만들어진다.
+			$http
+			.jsonp(url)
+			.success(function(data){
+				//FileUrl에서도 자바스크립트를 활용하여 서버에서 데이터를 가져왔다는거에 의미가 있다.
+				//({});모양의 함수를 호출한다. 
+				//function angular.callbacks._0(data){}
+				//콜백 함수를 만들어서 진행을 해준다, 
+				console.log(data);
+				$scope.info="번호 : "+data.num+" || 이름 : "+data.name;
+			})
+			.error(function(data){
+				console.log(data);
+			});
+			
+		};
+	});
+</script>
+</head>
+<body data-ng-controller="one">
+	<h1>angularJs를 활용한 jsonp예제</h1>
+	<button data-ng-click="getInfo()">회원정보보기 </button>
+	<p>{{info}}</p>
+</body>
+</html>
