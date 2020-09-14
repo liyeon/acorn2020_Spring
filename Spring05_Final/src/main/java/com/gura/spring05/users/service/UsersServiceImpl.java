@@ -209,5 +209,31 @@ public class UsersServiceImpl implements UsersService{
 		}
 		return map;
 	}
+
+	@Override
+	public boolean jsonpLogin(UsersDto dto) {
+		//dao객체를 이용해서 id, pwd가 유효한 정보인지 여부를 얻어낸다.
+		//입력한 정보가 유효한 정보인지 여부를 저장할 지역변수
+		boolean isValid = false; //초기값 false
+		
+		//로그인 폼에 입력한 아이디를 이용해서 DB에서 select 해본다.
+		//존재하지 않는 아이디면 null이 리턴된다.
+		UsersDto resultDto = dao.getData(dto.getId());
+		 //아이디 값으로 가져온 데이터의 null 가능성
+		if(resultDto != null) {//아이디가 존재하는 경우(아이디 일치)
+			//DB에 저장된 암호화된 비밀번호를 읽어온다.
+			String encodedPwd=resultDto.getPwd();
+			//로그인 폼에 입력한 비밀번호
+			String inputPwd = dto.getPwd();
+			//BCrypt 클래스의 static메소드를 이용해서 일치 여부를 얻어낸다.
+			isValid = BCrypt.checkpw(inputPwd, encodedPwd);
+		}
+		Map<String, Object> map=new HashMap<String, Object>();
+		if(isValid) {//만일 유효한 정보면
+			return true;
+		}else {//아니면
+			return false;
+		}
+	}
 	
 }//UsersService

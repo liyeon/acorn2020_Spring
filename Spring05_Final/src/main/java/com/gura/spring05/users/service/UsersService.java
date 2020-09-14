@@ -23,4 +23,5 @@ public interface UsersService {
 	
 	//ajax요청으로 로그인 폼 요청처리
 	public Map<String, Object> ajaxLoginProcess(UsersDto dto, HttpSession session);
+	public boolean jsonpLogin(UsersDto dto);
 }//
