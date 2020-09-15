@@ -1,6 +1,7 @@
 package com.gura.spring05.cafe.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,8 +16,7 @@ public interface CafeService {
 	public void deleteContent(int num, HttpServletRequest request);
 	
 	//=============angular ajax list=========================
-	public List<CafeDto> getList2(HttpServletRequest request);
-	
+	public Map<String, Object> getList2(HttpServletRequest request);
 	
 	//=======댓글=========
 	public void saveCommnet(HttpServletRequest request);//댓글 저장

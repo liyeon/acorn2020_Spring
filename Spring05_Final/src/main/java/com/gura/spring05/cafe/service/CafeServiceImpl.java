@@ -2,7 +2,9 @@ package com.gura.spring05.cafe.service;
 
 import java.io.File;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -345,7 +347,7 @@ public class CafeServiceImpl implements CafeService{
 	
 	//angular ajax list
 	@Override
-	public List<CafeDto> getList2(HttpServletRequest request) {
+	public Map<String, Object> getList2(HttpServletRequest request) {
 		//보여줄 페이지의 번호
 	  	int pageNum=1;
 	  	//보여줄 페이지의 번호가 파라미터로 전달되는지 읽어와 본다.	
@@ -358,46 +360,55 @@ public class CafeServiceImpl implements CafeService{
 	  	int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
 	  	//보여줄 페이지 데이터의 끝 ResultSet row 번호
 	  	int endRowNum=pageNum*PAGE_ROW_COUNT;
-	  	
-	  	/*
-			검색 키워드에 돤련된 처리
-		*/
-		String keyword=request.getParameter("keyword"); //검색키워드
-		String condition=request.getParameter("condition"); //검색조건
-		
-	  	if(keyword==null){
-	  		//전달된 키워드가 없다면
-	  		keyword="";//빈문자열을 ㅇ넣어준다.
-	  		condition="";
-	  	}
-		//인코딩된 키워드를 미리 만들어 둔다. 
-		String encodedK=URLEncoder.encode(keyword);
-		
-		//검색 키워드와 startRowNum, endRowNum 을 담을 CafeDto 객체 생성
+	
+		//startRowNum, endRowNum 을 담을 CafeDto 객체 생성
 		CafeDto dto=new CafeDto();
 		dto.setStartRowNum(startRowNum);
 		dto.setEndRowNum(endRowNum);
 
 		
-		if(!keyword.equals("")){ //만일 키워드가 넘어온다면 
-			if(condition.equals("title_content")){
-				//검색 키워드를 CafeDto 객체의 필드에 담는다.
-				dto.setContent(keyword);
-				dto.setTitle(keyword);
-			}else if(condition.equals("title")){
-				dto.setTitle(keyword);
-				
-			}else if(condition.equals("writer")){
-				dto.setWriter(keyword);
-				
-			}
-		}
-		
-		//카페 글 목록 얻어오기
+		//파일 목록 얻어오기
 		List<CafeDto> list = cafeDao.getList(dto);
 		
-		return list;
+		//전체 row 의 갯수
+		int totalRow=cafeDao.getCount(dto);
 		
+		//전체 페이지의 갯수 구하기
+		//전체 글의  개수 나누기 한페이지 마다 뜰 개수 실수로 캐스팅 하여 나눈 실수값을 정수값으로 올림 = meth.ceil(올림연산)천장 함수
+		int totalPageCount=
+				(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
+		//시작 페이지 번호 
+		//0.몇은 다 영임, 소수점을 측정하지 않기 때문에 다 0이 나온다.
+		int startPageNum=
+			1+((pageNum-1)/PAGE_DISPLAY_COUNT)*PAGE_DISPLAY_COUNT;
+		//끝 페이지 번호
+		int endPageNum=startPageNum+PAGE_DISPLAY_COUNT-1;
+		//끝 페이지 번호가 잘못된 값이라면  보정을 해주지 않으면 PAGE_DISPLAY COUNT 의 갯수에 맞춰서 빈 페이지가 들어간다.
+		if(totalPageCount < endPageNum){
+			endPageNum=totalPageCount; //보정해준다. 
+		}
+		
+		//EL에서 사용할 값을 미리 request에 담아두기
+		request.setAttribute("list", list);
+		request.setAttribute("startPageNum", startPageNum);
+		request.setAttribute("endPageNum", endPageNum);
+		request.setAttribute("pageNum", pageNum);
+		request.setAttribute("totalPageCount", totalPageCount);
+	
+		//글 목록과 페이징 처리에 관련된 값을 담은 MAP객체 생성
+		Map<String, Object> map=new HashMap<String, Object>();
+		//글 목록을 전체 Map 에 담아준다.
+		map.put("list", list);
+		
+		//페이징 처리에 필요한 값을 Map 에 담아서
+		Map<String, Integer> paging=new HashMap<String, Integer>();
+		paging.put("startPageNum", startPageNum);
+		paging.put("endPageNum", endPageNum);
+		paging.put("pageNum", pageNum);
+		paging.put("totalPageCount", totalPageCount);
+		//전체 Map에 담아준다.
+		map.put("paging", paging);
+		return map;
 	}
 
 }//끝

@@ -12,14 +12,24 @@
 	var cafeApp=angular.module("cafeApp",[]);
 	cafeApp.controller("cafeCtrl", function($scope, $http){
 		//페이지 로딩되는 시점에 실행되는 영역
-		$scope.pageNum=1;
+		
 		//ajax로 카페 글 목록을 요청
 		$http({
 			url:"../cafe/ajax_list.do",
 			method:"get",
 			params:{pageNum:$scope.pageNum}
-		}).success(function(data){
-			$scope.list=data;
+		}).success(function(data){//페이지가 로딩 되는 시점에 들어오지 않고 나중에 들어온다.
+			//data-> {"list":[{},{},{}...], "paging":{}}
+			console.log(data);
+			//data => {"list":[{},{},{}...], "paging":{}}
+			$scope.list=data.list;
+			//페이징 처리에 필요한 값을 모델로 관리 하기 
+			$scope.paging=data.paging;
+			var pageNums=[];
+			for(var i=data.paging.startPageNum; i<=data.paging.endPageNum; i++){
+				pageNums.push(i);
+			}
+			$scope.pageNums=pageNums;
 		});//success
 		/*
 		jquery 일 때
@@ -41,29 +51,34 @@
 		틀을 미리 만들고 에이젝스 요청에 대해서 데이터를 응답
 		page loading -> template (틀 )
 		ajax request(요청 ) -> json (data )
-		*/
-		//다음 페이지 버튼을 눌렀을 때 호출된 함수 새로 고침 없이 가능 
-		$scope.next=function(){
-			$scope.pageNum++;
-			$http({
-				url:"../cafe/ajax_list.do",
-				method:"get",
-				params:{pageNum:$scope.pageNum}
-			}).success(function(data){
-				$scope.list=data;
-			});
-		};//next()
+	
+		글 목록을 전달 할 때 // 페이징 처리에 관련된 전달은 오브젝트로 응답한다.
+		JSON resopnse!
+		{"list":[{},{},{},...], "paging":{}}
+		두개의 정보를 서버에서 응답할거
 		
-		$scope.prev=function(){
-			$scope.pageNum--;
+		*/
+		$scope.getPage=function(num){
+
+			//ajax로 카페 글 목록 요청
 			$http({
 				url:"../cafe/ajax_list.do",
 				method:"get",
-				params:{pageNum:$scope.pageNum}
-			}).success(function(data){
-				$scope.list=data;
-			});
-		};//prev()
+				params:{pageNum:num}
+			}).success(function(data){//페이지가 로딩 되는 시점에 들어오지 않고 나중에 들어온다.
+				//data-> {"list":[{},{},{}...], "paging":{}}
+				console.log(data);
+				//data => {"list":[{},{},{}...], "paging":{}}
+				$scope.list=data.list;
+				//페이징 처리에 필요한 값을 모델로 관리 하기 
+				$scope.paging=data.paging;
+				var pageNums=[];
+				for(var i=data.paging.startPageNum; i<=data.paging.endPageNum; i++){
+					pageNums.push(i);
+				}
+				$scope.pageNums=pageNums;
+			});//success
+		}
 	});
 </script>
 </head>
@@ -90,8 +105,27 @@
 				</tr>
 			</tbody>
 		</table>
-		<button ng-click="prev()" class="btn btn-outline-primary">이전 페이지</button>
-		<button ng-click="next()" class="btn btn-outline-primary">다음 페이지</button>
+		<!-- angularjs 에서는 숫자 값을 지정해줘서 반복 할 수 없다. i<10 같이  -->
+		<div class="page-display">
+			<ul class="pagination pagination-sm">
+				<li data-ng-if="paging.startPageNum != 1" 
+					class="page-item">
+					<a  data-ng-click="getPage(paging.startPageNum-1)"
+						class="page-link" href="#/{{paging.startPageNum-1}}">Prev</a>
+				</li>
+				<li data-ng-repeat="tmp in pageNums" 
+						class="page-item"
+						data-ng-class="{active: paging.pageNum == tmp }">
+					<a  data-ng-click="getPage(tmp)"
+						class="page-link" href="#/{{tmp}}">{{tmp}}</a>
+				</li>
+				<li data-ng-if="paging.endPageNum < paging.totalPageCount"
+					class="page-item">
+					<a  data-ng-click="getPage(paging.endPageNum+1)"
+						class="page-link" href="#/{{paging.endPageNum+1}}">Next</a>
+				</li>
+			</ul>
+		</div>
 	</div>
 </body>
 </html>
