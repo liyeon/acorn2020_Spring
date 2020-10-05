@@ -20,6 +20,16 @@ public class TestController {
 	@Autowired
 	private UsersService usersService;
 	
+	@RequestMapping("/react/send")
+	@ResponseBody
+	public Map<String, Object> sendMessage(@RequestParam String msg){
+		System.out.println(msg);
+		Map<String, Object> map=new HashMap<String, Object>();
+		map.put("isSuccess", true);
+		map.put("msg", "ajax 전송을 받았습니다. 클라이언트얌ㅎㅎ");
+		return map;
+	};
+	
 	@RequestMapping("/api/jsonp_login")
 	@ResponseBody
 	//콜백이라는 함수명으로 파라미터가 넘어온다.
