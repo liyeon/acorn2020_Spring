@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8"><!--  -->
 <title>/views/home.jsp</title>
 <link rel="stylesheet" href="resources/css/bootstrap.css" />
 </head>
@@ -30,6 +30,8 @@
 		<li><a href="shop/list.do">상품 목록 보기</a></li>
 		<li><a href="angularjs/test01.jsp">AngularJs 테스트</a></li>
 		<li><a href="css3/Step01_BorderRadius.html">css3테스트</a></li>
+		<li><a href="index.html">ReactJs 테스트</a></li><%! /* 싱글페이지 기반이면 index.html만 있는거다. */ %>
+		<!-- 구별하는 방법은 톰캣 서버에 쿠키를 심어 둔 뒤에 구별한다. -->
 	</ul>
 </div>
 </body>
